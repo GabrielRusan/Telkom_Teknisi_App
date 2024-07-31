@@ -30,6 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  auth:
+    path: modules/auth
+  core:
+    path: modules/core
 
 
   # The following adds the Cupertino Icons font to your application.
