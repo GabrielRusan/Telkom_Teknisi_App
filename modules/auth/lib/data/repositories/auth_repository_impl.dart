@@ -21,6 +21,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return const Left(ServerFailure(''));
     } on NoCredentialException {
       return const Left(NoCredentialFailure(''));
+    } on ConnectionException {
+      return const Left(
+          ConnectionFailure('Gagal menghubungkan dengan server!'));
     }
   }
 
@@ -35,6 +38,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(LoginFailure(e.message));
     } on ServerException {
       return const Left(ServerFailure('Server Error'));
+    } on ConnectionException {
+      return const Left(
+          ConnectionFailure('Gagal menghubungkan dengan server!'));
     }
   }
 }

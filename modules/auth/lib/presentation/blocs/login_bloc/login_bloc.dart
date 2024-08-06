@@ -15,11 +15,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void _onUsernameChanged(UsernameChanged event, Emitter<LoginState> emit) {
-    emit(state.copyWith(username: event.value));
+    emit(state.copyWith(
+        username: event.value, loginStatus: LoginStatus.initial));
   }
 
   void _onPasswordChanged(PasswordChanged event, Emitter<LoginState> emit) {
-    emit(state.copyWith(password: event.value));
+    emit(state.copyWith(
+        password: event.value, loginStatus: LoginStatus.initial));
   }
 
   Future<void> _onSignIn(SignIn event, Emitter<LoginState> emit) async {

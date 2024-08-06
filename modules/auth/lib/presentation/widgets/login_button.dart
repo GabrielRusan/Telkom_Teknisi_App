@@ -14,7 +14,10 @@ class LoginButton extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return ButtonWidget.defaultContainer(
           child: state.loginStatus == LoginStatus.inProggres
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  color: Colors.white,
+                ))
               : Text(
                   'Masuk',
                   style: TextStyleWidget.bodyB1(
@@ -23,6 +26,7 @@ class LoginButton extends StatelessWidget {
                   ),
                 ),
           onPressed: () {
+            FocusScope.of(context).unfocus();
             context.read<LoginBloc>().add(SignIn());
           });
     });

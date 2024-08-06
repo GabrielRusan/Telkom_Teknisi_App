@@ -16,9 +16,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Timer? _timer;
   @override
   void initState() {
-    _timer = Timer(const Duration(seconds: 2), () {
-      context.read<SplashScreenBloc>().add(FetchUserData());
-    });
+    // _timer = Timer(const Duration(seconds: 2), () {
+    //   context.read<SplashScreenBloc>().add(FetchUserData());
+    // });
     super.initState();
   }
 
@@ -37,28 +37,30 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
       child: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              Image.asset(
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Image.asset(
                 'assets/icons/logo_telkom.png',
                 package: 'auth',
                 width: 200,
                 height: 200,
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              BlocBuilder<SplashScreenBloc, SplashScreenState>(
-                  builder: (context, state) {
-                if (state is SplashScreenLoading) {
-                  return const CircularProgressIndicator();
-                } else {
-                  return const SizedBox();
-                }
-              })
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            BlocBuilder<SplashScreenBloc, SplashScreenState>(
+                builder: (context, state) {
+              if (state is SplashScreenLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return const SizedBox();
+              }
+            })
+          ],
         ),
       ),
     );

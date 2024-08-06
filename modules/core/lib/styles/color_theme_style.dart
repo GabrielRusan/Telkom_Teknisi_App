@@ -31,4 +31,6 @@ class ColorThemeStyle {
 
   static const Color redPrimary = Color(0xFFEC2028);
   static const Color redSecond = Color.fromARGB(255, 242, 111, 115);
+
+  static const Color greyBlack = Color(0xFF747D8C);
 }

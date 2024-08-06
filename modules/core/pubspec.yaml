@@ -2,6 +2,7 @@ name: core
 description: "A new Flutter package project."
 version: 0.0.1
 homepage:
+publish_to: none
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -13,6 +14,11 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.10+1
   google_fonts: ^6.2.1
+  data_connection_checker:
+    git:
+      url: https://github.com/chornthorn/data_connection_checker.git
+      ref: master
+  flutter_bloc: ^8.1.6
 
 dev_dependencies:
   flutter_test:
@@ -26,8 +32,8 @@ dev_dependencies:
 flutter:
 
   # To add assets to your package, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
   #
   # For details regarding assets in packages, see
@@ -55,3 +61,7 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
+flutter_assets:
+  assets_path: assets/
+  output_path: lib/constants/
+  filename: assets.dart

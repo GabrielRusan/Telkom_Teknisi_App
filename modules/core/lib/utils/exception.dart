@@ -4,6 +4,8 @@ class InvalidTokenException implements Exception {}
 
 class NoCredentialException implements Exception {}
 
+class ConnectionException implements Exception {}
+
 class WrongCombinationException implements Exception {
   final String message;
 

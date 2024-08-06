@@ -72,6 +72,22 @@ void main() {
       expect(() => response, throwsA(isA<WrongCombinationException>()));
     });
 
+    test('should throw ConnectionException when cannot connect to server',
+        () async {
+      // arrange
+      when(mockDio.post(any, data: anyNamed('data'))).thenThrow(
+          DioException.connectionError(
+              requestOptions: RequestOptions(path: ''),
+              reason: 'Cant connect to ur url'));
+
+      // act
+      final response = authRemoteDataSourceImpl.logIn(
+          username: 'test_user', password: 'test_pass');
+
+      // assert
+      expect(() => response, throwsA(isA<ConnectionException>()));
+    });
+
     test('should throw ServerException when call to api is not successful',
         () async {
       // arrange
@@ -114,6 +130,23 @@ void main() {
 
       // assert
       expect(result, tUserModel);
+    });
+
+    test('should throw ConnectionException when cannot connect to server',
+        () async {
+      // arrange
+      when(mockSharedPreferences.getString("token")).thenReturn(tToken);
+      when(mockSharedPreferences.getString("userId")).thenReturn(tUserId);
+      when(mockDio.get(any, options: anyNamed('options'))).thenThrow(
+          DioException.connectionError(
+              requestOptions: RequestOptions(path: ''),
+              reason: 'Cant connect to ur url'));
+
+      // act
+      final response = authRemoteDataSourceImpl.getUserData();
+
+      // assert
+      expect(() => response, throwsA(isA<ConnectionException>()));
     });
 
     test(

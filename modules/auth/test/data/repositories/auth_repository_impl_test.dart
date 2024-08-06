@@ -69,6 +69,23 @@ void main() {
       //assert
       expect(result, const Left(ServerFailure('Server Error')));
     });
+
+    test('should return ConnectionFailure when cannot connect to server',
+        () async {
+      //arrange
+      when(mockAuthRemoteDataSource.logIn(
+        username: tUsername,
+        password: tPassword,
+      )).thenThrow(ConnectionException());
+
+      //act
+      final result =
+          await repository.logIn(username: tUsername, password: tPassword);
+
+      //assert
+      expect(result,
+          const Left(ConnectionFailure('Gagal menghubungkan dengan server!')));
+    });
   });
 
   group('get user data test', () {
@@ -106,6 +123,19 @@ void main() {
 
       //assert
       expect(result, const Left(ServerFailure('')));
+    });
+
+    test('should return ConnectionFailure when server error', () async {
+      //arrange
+      when(mockAuthRemoteDataSource.getUserData())
+          .thenThrow(ConnectionException());
+
+      //act
+      final result = await repository.getUserData();
+
+      //assert
+      expect(result,
+          const Left(ConnectionFailure('Gagal menghubungkan dengan server!')));
     });
   });
 }

@@ -31,7 +31,7 @@ void main() {
 
     await tester.pumpWidget(makeTestableWidget(const SplashScreen()));
 
-    expect(centerFinder, findsOneWidget);
+    expect(centerFinder, findsAtLeast(1));
     expect(progressBarFinder, findsOneWidget);
   });
 }
