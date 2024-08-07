@@ -26,6 +26,7 @@ class TicketCard extends StatelessWidget {
           boxShadow: [ShadowStyle.shadowFix1],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.all(12),
@@ -99,17 +100,20 @@ class TicketCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Text(
                 ticket.title,
-                style: TextStyleWidget.headlineH4(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyleWidget.headlineH4(fontWeight: FontWeight.w600),
               ),
             ),
             const SizedBox(
-              height: 8,
+              height: 4,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Text(
-                ticket.title,
-                style: TextStyleWidget.headlineH4(),
+                ticket.createdAt.toString(),
+                style:
+                    TextStyleWidget.bodyB3(color: ColorThemeStyle.redPrimary),
               ),
             ),
             const SizedBox(
@@ -125,53 +129,59 @@ class TicketCard extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.location_pin,
+                          color: upperColor ?? ColorThemeStyle.blue80,
                           size: 57,
                         ),
                         const SizedBox(
-                          width: 16,
+                          width: 8,
                         ),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 4),
-                                child: Text(
-                                  ticket.customerName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyleWidget.titleT3(
-                                    fontWeight: FontWeight.w600,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 4),
+                                  child: Text(
+                                    ticket.customerName,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyleWidget.titleT3(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                ticket.address,
-                                style: TextStyleWidget.bodyB3(
-                                  fontWeight: FontWeight.w500,
+                                const SizedBox(
+                                  height: 8,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  ticket.address,
+                                  style: TextStyleWidget.bodyB3(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       ],
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'GOLD',
-                        style: TextStyleWidget.titleT3(
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFFFFD700),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Silver',
+                          style: TextStyleWidget.titleT3(
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFFC0C0C0)),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 ],
               ),

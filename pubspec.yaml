@@ -35,6 +35,8 @@ dependencies:
     path: modules/auth
   core:
     path: modules/core
+  ticket:
+    path: modules/ticket
   data_connection_checker:
     git:
       url: https://github.com/chornthorn/data_connection_checker.git

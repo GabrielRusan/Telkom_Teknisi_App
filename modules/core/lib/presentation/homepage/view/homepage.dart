@@ -2,6 +2,7 @@ import 'package:core/presentation/homepage/bloc/homepage_bloc.dart';
 import 'package:core/widgets/bottom_navbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ticket/presentation/pages/historic_ticket_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,12 +20,7 @@ class HomePage extends StatelessWidget {
               ),
               bottomNavigationBar: BottomNavigationBarWidget(),
             ),
-            Scaffold(
-              body: Center(
-                child: Text('this is other page'),
-              ),
-              bottomNavigationBar: BottomNavigationBarWidget(),
-            ),
+            HistoricTicketPage(),
             Scaffold(
               body: Center(
                 child: Text('this is other 2 page'),

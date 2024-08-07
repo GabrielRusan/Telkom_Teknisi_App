@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:core/utils/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:telkom_teknisi_app/injection.dart' as di;
+import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
+import 'package:ticket/presentation/pages/detail_ticket_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<HomepageBloc>(
           create: (_) => di.locator<HomepageBloc>(),
         ),
+        BlocProvider<HistoricTicketBloc>(
+          create: (_) => di.locator<HistoricTicketBloc>(),
+        ),
       ],
       child: MaterialApp(
         title: 'Telkom Teknisi App',
@@ -40,11 +45,12 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: MyRoutes.homePage,
+        initialRoute: MyRoutes.detailTicketPage,
         routes: {
           MyRoutes.splashScreen: (_) => const SplashScreen(),
           MyRoutes.loginScreen: (_) => const LoginScreen(),
           MyRoutes.homePage: (_) => const HomePage(),
+          MyRoutes.detailTicketPage: (_) => const DetailTicketPage(),
         },
       ),
     );
