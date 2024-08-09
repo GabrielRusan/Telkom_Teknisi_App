@@ -28,7 +28,8 @@ Future<void> init() async {
     () => SharedPreferences.getInstance(),
   );
   await locator.isReady<SharedPreferences>();
-  locator.registerLazySingleton<Dio>(() => Dio());
+  locator.registerLazySingleton<Dio>(
+      () => Dio(BaseOptions(connectTimeout: const Duration(seconds: 5))));
   locator.registerLazySingleton(() => DataConnectionChecker());
 
   //datasources
@@ -41,7 +42,8 @@ Future<void> init() async {
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(authRemoteDataSource: locator()));
   locator.registerLazySingleton<TicketRepository>(() => TicketRepositoryImpl(
-      ticketRemoteDatasource: locator(), networkInfo: locator()));
+        ticketRemoteDatasource: locator(),
+      ));
 
   //usecases
   locator.registerLazySingleton(() => Login(repository: locator()));

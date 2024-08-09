@@ -20,16 +20,24 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
     if (token == null || userId == null) {
       throw NoCredentialException();
     }
+    try {
+      final response = await dio.get("$BASE_URL/ticket/active/$userId",
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
 
-    final response = await dio.get("$BASE_URL/ticket/active/$userId",
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
-
-    if (response.statusCode == 200) {
-      return TicketModelResponse.fromJson(response.data).ticketList;
-    } else if (response.statusCode == 401) {
-      throw InvalidTokenException();
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return TicketModelResponse.fromJson(response.data).ticketList;
+      } else if (response.statusCode == 401) {
+        throw InvalidTokenException();
+      } else {
+        throw ServerException();
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.connectionError) {
+        throw ConnectionException();
+      } else {
+        throw ServerException();
+      }
     }
   }
 
@@ -42,15 +50,24 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
       throw NoCredentialException();
     }
 
-    final response = await dio.get("$BASE_URL/ticket/historic/$userId",
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    try {
+      final response = await dio.get("$BASE_URL/ticket/historic/$userId",
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
 
-    if (response.statusCode == 200) {
-      return TicketModelResponse.fromJson(response.data).ticketList;
-    } else if (response.statusCode == 401) {
-      throw InvalidTokenException();
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return TicketModelResponse.fromJson(response.data).ticketList;
+      } else if (response.statusCode == 401) {
+        throw InvalidTokenException();
+      } else {
+        throw ServerException();
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.connectionError) {
+        throw ConnectionException();
+      } else {
+        throw ServerException();
+      }
     }
   }
 
@@ -63,20 +80,29 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
       throw NoCredentialException();
     }
 
-    final response =
-        await dio.patch("$BASE_URL/ticket/update/${ticket.ticketId}",
-            data: {'status': ticket.status},
-            options: Options(headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $token',
-            }));
+    try {
+      final response =
+          await dio.put("$BASE_URL/ticket/update/${ticket.ticketId}",
+              data: ticket.toJson(),
+              options: Options(headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer $token',
+              }));
 
-    if (response.statusCode == 200) {
-      return true;
-    } else if (response.statusCode == 401) {
-      throw InvalidTokenException();
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return true;
+      } else if (response.statusCode == 401) {
+        throw InvalidTokenException();
+      } else {
+        throw ServerException();
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.connectionError) {
+        throw ConnectionException();
+      } else {
+        throw ServerException();
+      }
     }
   }
 }

@@ -3,16 +3,16 @@ import 'package:core/styles/text_style_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ticket/domain/entities/ticket.dart';
 import 'package:core/styles/shadow_style.dart';
+import 'package:ticket/utils/date_converter.dart';
 
 class TicketCard extends StatelessWidget {
   final Ticket ticket;
-  final Color? upperColor;
   final Function() onTapCard;
-  const TicketCard(
-      {super.key,
-      required this.ticket,
-      required this.onTapCard,
-      this.upperColor});
+  const TicketCard({
+    super.key,
+    required this.ticket,
+    required this.onTapCard,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,15 @@ class TicketCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                  color: upperColor ?? ColorThemeStyle.blue80,
+                  color: ticket.status == 'Ditugaskan'
+                      ? ColorThemeStyle.blue80
+                      : ticket.status == 'Selesai'
+                          ? ColorThemeStyle.green100
+                          : ticket.status == 'In Progress'
+                              ? Colors.orange
+                              : ticket.status == 'Dibatalkan'
+                                  ? ColorThemeStyle.redPrimary
+                                  : Colors.black,
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10))),
@@ -102,7 +110,7 @@ class TicketCard extends StatelessWidget {
                 ticket.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyleWidget.headlineH4(fontWeight: FontWeight.w600),
+                style: TextStyleWidget.headlineH5(fontWeight: FontWeight.w600),
               ),
             ),
             const SizedBox(
@@ -111,7 +119,7 @@ class TicketCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Text(
-                ticket.createdAt.toString(),
+                remainingTime(ticket.createdAt),
                 style:
                     TextStyleWidget.bodyB3(color: ColorThemeStyle.redPrimary),
               ),
@@ -131,7 +139,15 @@ class TicketCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.location_pin,
-                          color: upperColor ?? ColorThemeStyle.blue80,
+                          color: ticket.status == 'Ditugaskan'
+                              ? ColorThemeStyle.blue80
+                              : ticket.status == 'Selesai'
+                                  ? ColorThemeStyle.green100
+                                  : ticket.status == 'In Progress'
+                                      ? Colors.orange
+                                      : ticket.status == 'Dibatalkan'
+                                          ? ColorThemeStyle.redPrimary
+                                          : Colors.black,
                           size: 57,
                         ),
                         const SizedBox(
@@ -169,20 +185,27 @@ class TicketCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Silver',
-                          style: TextStyleWidget.titleT3(
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFFC0C0C0)),
-                        ),
-                      ],
+                  Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: ticket.ticketType == 'Gold'
+                            ? Colors.amber.shade400
+                            : ticket.ticketType == 'Silver'
+                                ? const Color(0xFFC0C0C0)
+                                : ticket.ticketType == 'Reguler'
+                                    ? ColorThemeStyle.blue60
+                                    : Colors.black,
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Text(
+                      ticket.ticketType,
+                      style: TextStyleWidget.bodyB3(
+                          fontWeight: FontWeight.bold,
+                          // color: Colors.grey.shade500,
+                          color: Colors.white),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

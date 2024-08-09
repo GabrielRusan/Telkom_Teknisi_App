@@ -1,15 +1,26 @@
 import 'package:core/styles/color_theme_style.dart';
 import 'package:core/styles/text_style_widget.dart';
+import 'package:core/utils/routes.dart';
 import 'package:core/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:ticket/domain/entities/ticket.dart';
+import 'package:ticket/utils/date_converter.dart';
 
 class DetailTicketPage extends StatelessWidget {
   const DetailTicketPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ticket = ModalRoute.of(context)!.settings.arguments as Ticket;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            // context.read<HistoricTicketBloc>().add(FetchHistoricTicket());
+            Navigator.pushNamed(context, MyRoutes.homePage);
+          },
+        ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Padding(
@@ -18,10 +29,10 @@ class DetailTicketPage extends StatelessWidget {
             children: [
               Text(
                 "Detail Ticket",
-                style: TextStyleWidget.titleT1(fontWeight: FontWeight.w600),
+                style: TextStyleWidget.headlineH4(fontWeight: FontWeight.w700),
               ),
               Text(
-                "Ticket #123",
+                ticket.ticketId,
                 style: TextStyleWidget.bodyB2(
                     color: ColorThemeStyle.grey80, fontWeight: FontWeight.w600),
               ),
@@ -46,16 +57,30 @@ class DetailTicketPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Senin, 20 Mei 2024, 12:15',
+                        dateToStringLengkap(ticket.createdAt),
                         style: TextStyleWidget.titleT2(
                             // color: ColorThemeStyle.grey80,
                             fontWeight: FontWeight.w700),
                       ),
-                      Text(
-                        'Ditugaskan',
-                        style: TextStyleWidget.titleT2(
-                            fontWeight: FontWeight.w600,
-                            color: ColorThemeStyle.blue100),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                            color: ticket.status == 'Ditugaskan'
+                                ? ColorThemeStyle.blue80
+                                : ticket.status == 'Selesai'
+                                    ? ColorThemeStyle.green100
+                                    : ticket.status == 'In Progress'
+                                        ? Colors.orange
+                                        : ticket.status == 'Dibatalkan'
+                                            ? ColorThemeStyle.redPrimary
+                                            : Colors.black,
+                            borderRadius: BorderRadius.circular(4)),
+                        child: Text(
+                          ticket.status,
+                          style: TextStyleWidget.bodyB2(
+                              fontWeight: FontWeight.w600, color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
@@ -63,14 +88,14 @@ class DetailTicketPage extends StatelessWidget {
                     height: 16,
                   ),
                   Text(
-                    'Lelet bangeet wifi nya, dikit-dikit disconnect anjay banget gak tuhh brooo!',
+                    ticket.title,
                     style: TextStyleWidget.titleT3(fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(
                     height: 2,
                   ),
                   Text(
-                    '2 jam 50 menit tersisa',
+                    remainingTime(ticket.createdAt),
                     textAlign: TextAlign.justify,
                     style: TextStyleWidget.bodyB3(
                         fontWeight: FontWeight.w500,
@@ -79,12 +104,25 @@ class DetailTicketPage extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  Text(
-                    'GOLD',
-                    style: TextStyleWidget.bodyB3(
-                        fontWeight: FontWeight.bold,
-                        // color: Colors.grey.shade500,
-                        color: Colors.amber),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: ticket.ticketType == 'Gold'
+                            ? Colors.amber.shade400
+                            : ticket.ticketType == 'Silver'
+                                ? const Color(0xFFC0C0C0)
+                                : ticket.ticketType == 'Reguler'
+                                    ? ColorThemeStyle.blue60
+                                    : Colors.black,
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Text(
+                      ticket.ticketType,
+                      style: TextStyleWidget.bodyB3(
+                          fontWeight: FontWeight.bold,
+                          // color: Colors.grey.shade500,
+                          color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -233,7 +271,7 @@ class DetailTicketPage extends StatelessWidget {
                                   FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
-                                      'Jln. G. Obos XIX A, dekat mesjid nurul iman',
+                                      ticket.address,
                                       maxLines: 1,
                                       style: TextStyleWidget.bodyB3(
                                           fontWeight: FontWeight.w500,
@@ -267,24 +305,41 @@ class DetailTicketPage extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  Text(
-                    'Lampu merahnya kedap-kedip mulu, setelah saya cek nampaknya kabel FO nya yang rusak',
-                    style: TextStyleWidget.titleT3(fontWeight: FontWeight.w500),
+                  ticket.note.isNotEmpty
+                      ? Text(
+                          ticket.note,
+                          style: TextStyleWidget.titleT3(
+                              fontWeight: FontWeight.w500),
+                        )
+                      : Text(
+                          '-',
+                          style: TextStyleWidget.titleT3(
+                              fontWeight: FontWeight.w500),
+                        ),
+                  SizedBox(
+                    height: ticket.status == 'Selesai' ? 8 : 32,
                   ),
-                  // Text(
-                  //   '-',
-                  //   style: TextStyleWidget.titleT3(fontWeight: FontWeight.w500),
-                  // ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  ButtonWidget.defaultContainer(
-                      child: Text(
-                        'Ubah Status Tiket',
-                        style: TextStyleWidget.labelL1(
-                            color: Colors.white, fontWeight: FontWeight.w600),
-                      ),
-                      onPressed: () {})
+                  ticket.status == 'Selesai'
+                      ? const SizedBox()
+                      : ticket.status == 'Ditugaskan'
+                          ? ButtonWidget.defaultContainer(
+                              child: Text(
+                                'Kerjakan Sekarang',
+                                style: TextStyleWidget.labelL1(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              onPressed: () {})
+                          : ticket.status == 'In Progress'
+                              ? ButtonWidget.defaultContainer(
+                                  child: Text(
+                                    'Selesai',
+                                    style: TextStyleWidget.bodyB1(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  onPressed: () {})
+                              : const SizedBox()
                 ],
               ),
             ),

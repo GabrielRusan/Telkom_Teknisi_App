@@ -7,12 +7,14 @@ import 'package:core/presentation/homepage/view/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:core/utils/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:telkom_teknisi_app/injection.dart' as di;
 import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
 import 'package:ticket/presentation/pages/detail_ticket_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
   await di.init(); // dependency injections
   runApp(const MyApp());
 }
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: MyRoutes.detailTicketPage,
+        initialRoute: MyRoutes.homePage,
         routes: {
           MyRoutes.splashScreen: (_) => const SplashScreen(),
           MyRoutes.loginScreen: (_) => const LoginScreen(),

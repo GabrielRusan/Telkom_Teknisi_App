@@ -10,6 +10,7 @@ class TicketModel extends Equatable {
   final DateTime createdAt;
   final String address;
   final String status;
+  final String ticketType;
 
   const TicketModel({
     required this.ticketId,
@@ -20,6 +21,7 @@ class TicketModel extends Equatable {
     required this.address,
     required this.status,
     required this.customerNoHp,
+    required this.ticketType,
   });
 
   factory TicketModel.fromJson(Map<String, dynamic> json) => TicketModel(
@@ -31,6 +33,7 @@ class TicketModel extends Equatable {
         address: json['address'],
         status: json['status'],
         customerNoHp: json['customerNoHp'],
+        ticketType: json['ticketType'],
       );
 
   factory TicketModel.fromEntity(Ticket ticket) => TicketModel(
@@ -42,6 +45,7 @@ class TicketModel extends Equatable {
         address: ticket.address,
         status: ticket.status,
         customerNoHp: ticket.customerNoHp,
+        ticketType: ticket.ticketType,
       );
 
   Ticket toEntity() => Ticket(
@@ -52,7 +56,20 @@ class TicketModel extends Equatable {
       createdAt: createdAt,
       address: address,
       status: status,
-      customerNoHp: customerNoHp);
+      customerNoHp: customerNoHp,
+      ticketType: ticketType);
+
+  Map<String, dynamic> toJson() => {
+        'ticketId': ticketId,
+        'title': title,
+        'customerName': customerName,
+        'note': note,
+        'createdAt': createdAt,
+        'address': address,
+        'status': status,
+        'customerNoHp': customerNoHp,
+        'ticketType': ticketType,
+      };
 
   @override
   List<Object?> get props => [
@@ -64,5 +81,6 @@ class TicketModel extends Equatable {
         address,
         status,
         customerNoHp,
+        ticketType
       ];
 }

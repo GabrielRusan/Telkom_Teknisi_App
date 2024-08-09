@@ -45,7 +45,8 @@ void main() {
                 "note": "note",
                 "createdAt": "2024-01-01T12:00:00.000",
                 "address": "address",
-                "status": "Assigned"
+                "status": "Assigned",
+                "ticketType": "Gold"
               }
             ]
           },
@@ -95,6 +96,24 @@ void main() {
       expect(() => call, throwsA(isA<ServerException>()));
     });
 
+    test("should throw ConnectionException when cannot connect to the server",
+        () async {
+      //arrange
+      when(mockSharedPref.getString('userId')).thenReturn(tUserId);
+      when(mockSharedPref.getString('token')).thenReturn(tToken);
+      when(mockDio.get(
+        any,
+        options: anyNamed('options'),
+      )).thenThrow(DioException.connectionError(
+          reason: 'URL nya gabisa konek',
+          // timeout: const Duration(seconds: 5000),
+          requestOptions: RequestOptions(path: '')));
+      //act
+      final call = ticketRemoteDatasourceImpl.getActiveTicket();
+      //assert
+      expect(() => call, throwsA(isA<ConnectionException>()));
+    });
+
     test(
         "should throw NoCredentialException when user id or token not found in shared pref",
         () async {
@@ -127,7 +146,8 @@ void main() {
                 "note": "note",
                 "createdAt": "2024-01-01T12:00:00.000",
                 "address": "address",
-                "status": "Assigned"
+                "status": "Assigned",
+                "ticketType": "Gold"
               }
             ]
           },
@@ -177,6 +197,24 @@ void main() {
       expect(() => call, throwsA(isA<ServerException>()));
     });
 
+    test("should throw ConnectionException when cannot connect to the server",
+        () async {
+      //arrange
+      when(mockSharedPref.getString('userId')).thenReturn(tUserId);
+      when(mockSharedPref.getString('token')).thenReturn(tToken);
+      when(mockDio.get(
+        any,
+        options: anyNamed('options'),
+      )).thenThrow(DioException.connectionError(
+          reason: 'URL nya gabisa konek',
+          // timeout: const Duration(seconds: 5000),
+          requestOptions: RequestOptions(path: '')));
+      //act
+      final call = ticketRemoteDatasourceImpl.getHistoricTicket();
+      //assert
+      expect(() => call, throwsA(isA<ConnectionException>()));
+    });
+
     test(
         "should throw NoCredentialException when user id or token not found in shared pref",
         () async {
@@ -195,7 +233,7 @@ void main() {
       //arrange
       when(mockSharedPref.getString('userId')).thenReturn(tUserId);
       when(mockSharedPref.getString('token')).thenReturn(tToken);
-      when(mockDio.patch(
+      when(mockDio.put(
         any,
         data: anyNamed('data'),
         options: anyNamed('options'),
@@ -218,7 +256,7 @@ void main() {
       //arrange
       when(mockSharedPref.getString('userId')).thenReturn(tUserId);
       when(mockSharedPref.getString('token')).thenReturn(tToken);
-      when(mockDio.patch(
+      when(mockDio.put(
         any,
         data: anyNamed('data'),
         options: anyNamed('options'),
@@ -240,7 +278,7 @@ void main() {
       //arrange
       when(mockSharedPref.getString('userId')).thenReturn(tUserId);
       when(mockSharedPref.getString('token')).thenReturn(tToken);
-      when(mockDio.patch(
+      when(mockDio.put(
         any,
         data: anyNamed('data'),
         options: anyNamed('options'),
@@ -255,6 +293,25 @@ void main() {
       final call = ticketRemoteDatasourceImpl.updateTicketStatus(tTicketModel);
       //assert
       expect(() => call, throwsA(isA<ServerException>()));
+    });
+
+    test("should throw ConnectionException when cannot connect to the server",
+        () async {
+      //arrange
+      when(mockSharedPref.getString('userId')).thenReturn(tUserId);
+      when(mockSharedPref.getString('token')).thenReturn(tToken);
+      when(mockDio.put(
+        any,
+        data: anyNamed('data'),
+        options: anyNamed('options'),
+      )).thenThrow(DioException.connectionError(
+          reason: 'URL nya gabisa konek',
+          // timeout: const Duration(seconds: 5000),
+          requestOptions: RequestOptions(path: '')));
+      //act
+      final call = ticketRemoteDatasourceImpl.updateTicketStatus(tTicketModel);
+      //assert
+      expect(() => call, throwsA(isA<ConnectionException>()));
     });
 
     test(

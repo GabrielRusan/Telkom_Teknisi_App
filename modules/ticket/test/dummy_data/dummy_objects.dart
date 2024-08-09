@@ -10,7 +10,8 @@ TicketModel tTicketModel = TicketModel(
     createdAt: DateTime(2024, 1, 1, 12, 0, 0),
     address: "address",
     status: "Assigned",
-    customerNoHp: "123");
+    customerNoHp: "123",
+    ticketType: 'Gold');
 
 Ticket tTicket = Ticket(
     ticketId: "1",
@@ -20,7 +21,8 @@ Ticket tTicket = Ticket(
     createdAt: DateTime(2024, 1, 1, 12, 0, 0),
     address: "address",
     status: "Assigned",
-    customerNoHp: "123");
+    customerNoHp: "123",
+    ticketType: 'Gold');
 
 TicketModelResponse tTicketModelResponse =
     TicketModelResponse(ticketList: [tTicketModel]);

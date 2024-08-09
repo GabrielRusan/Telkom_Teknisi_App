@@ -5,6 +5,7 @@ class Ticket extends Equatable {
   final String title;
   final String customerName;
   final String customerNoHp;
+  final String ticketType;
   final String note;
   final DateTime createdAt;
   final String address;
@@ -14,6 +15,7 @@ class Ticket extends Equatable {
     required this.ticketId,
     required this.title,
     required this.customerName,
+    required this.ticketType,
     required this.note,
     required this.createdAt,
     required this.address,
@@ -31,5 +33,6 @@ class Ticket extends Equatable {
         address,
         status,
         customerNoHp,
+        ticketType
       ];
 }
