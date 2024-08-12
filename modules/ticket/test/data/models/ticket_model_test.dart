@@ -19,6 +19,27 @@ void main() {
     });
   });
 
+  group('toJson', () {
+    test('Should return a valid jsonMap from model', () {
+      // arrange
+      final Map<String, dynamic> jsonMap = {
+        "ticketId": "1",
+        "title": "title",
+        "customerName": "name",
+        "customerNoHp": "123",
+        "note": "note",
+        "createdAt": "2024-01-01T12:00:00.000",
+        "address": "address",
+        "status": "Assigned",
+        "ticketType": "Gold"
+      };
+      // act
+      final result = tTicketModel.toJson();
+      // assert
+      expect(result, jsonMap);
+    });
+  });
+
   group('toEntity', () {
     test('Should return a valid entity from model', () {
       // arrange

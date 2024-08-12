@@ -30,19 +30,23 @@ class TicketCard extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                  color: ticket.status == 'Ditugaskan'
-                      ? ColorThemeStyle.blue80
-                      : ticket.status == 'Selesai'
+              decoration: ticket.status == 'Ditugaskan'
+                  ? const BoxDecoration(
+                      gradient: ColorThemeStyle.gradientRed,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)))
+                  : BoxDecoration(
+                      color: ticket.status == 'Selesai'
                           ? ColorThemeStyle.green100
                           : ticket.status == 'In Progress'
                               ? Colors.orange
                               : ticket.status == 'Dibatalkan'
                                   ? ColorThemeStyle.redPrimary
                                   : Colors.black,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -140,7 +144,7 @@ class TicketCard extends StatelessWidget {
                         Icon(
                           Icons.location_pin,
                           color: ticket.status == 'Ditugaskan'
-                              ? ColorThemeStyle.blue80
+                              ? ColorThemeStyle.redPrimary
                               : ticket.status == 'Selesai'
                                   ? ColorThemeStyle.green100
                                   : ticket.status == 'In Progress'

@@ -28,9 +28,19 @@ class ColorThemeStyle {
   static const Color greenContainer = Color(0xFFB3DDC4);
   static const Color greenCarbon = Color(0xFF0B8708);
   static const Color greenSelengkapnya = Color(0xFF0B4D0A);
+  static const Color yellow = Color(0xFFF7B731);
 
   static const Color redPrimary = Color(0xFFEC2028);
   static const Color redSecond = Color.fromARGB(255, 242, 111, 115);
 
   static const Color greyBlack = Color(0xFF747D8C);
+
+  static const LinearGradient gradientRed = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      Color(0xFFE52D27),
+      Color(0xFFB31217),
+    ],
+  );
 }

@@ -64,7 +64,7 @@ class TicketModel extends Equatable {
         'title': title,
         'customerName': customerName,
         'note': note,
-        'createdAt': createdAt,
+        'createdAt': createdAt.toIso8601String(),
         'address': address,
         'status': status,
         'customerNoHp': customerNoHp,

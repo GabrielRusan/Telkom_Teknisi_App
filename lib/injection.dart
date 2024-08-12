@@ -6,7 +6,7 @@ import 'package:auth/domain/usecases/get_user_data.dart';
 import 'package:auth/domain/usecases/login.dart';
 import 'package:auth/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:auth/presentation/blocs/splash_screen_bloc/splash_screen_bloc.dart';
-import 'package:core/presentation/homepage/bloc/homepage_bloc.dart';
+import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
 import 'package:core/utils/network_info.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';

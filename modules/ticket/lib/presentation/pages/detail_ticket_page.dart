@@ -65,17 +65,19 @@ class DetailTicketPage extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                            color: ticket.status == 'Ditugaskan'
-                                ? ColorThemeStyle.blue80
-                                : ticket.status == 'Selesai'
+                        decoration: ticket.status == 'Ditugaskan'
+                            ? BoxDecoration(
+                                gradient: ColorThemeStyle.gradientRed,
+                                borderRadius: BorderRadius.circular(4))
+                            : BoxDecoration(
+                                color: ticket.status == 'Selesai'
                                     ? ColorThemeStyle.green100
                                     : ticket.status == 'In Progress'
                                         ? Colors.orange
                                         : ticket.status == 'Dibatalkan'
                                             ? ColorThemeStyle.redPrimary
                                             : Colors.black,
-                            borderRadius: BorderRadius.circular(4)),
+                                borderRadius: BorderRadius.circular(4)),
                         child: Text(
                           ticket.status,
                           style: TextStyleWidget.bodyB2(

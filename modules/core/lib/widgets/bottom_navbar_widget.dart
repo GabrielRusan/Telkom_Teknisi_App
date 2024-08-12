@@ -1,4 +1,4 @@
-import 'package:core/presentation/homepage/bloc/homepage_bloc.dart';
+import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
 import 'package:core/styles/color_theme_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
