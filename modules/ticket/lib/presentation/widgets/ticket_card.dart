@@ -40,7 +40,7 @@ class TicketCard extends StatelessWidget {
                       color: ticket.status == 'Selesai'
                           ? ColorThemeStyle.green100
                           : ticket.status == 'In Progress'
-                              ? Colors.orange
+                              ? ColorThemeStyle.yellow
                               : ticket.status == 'Dibatalkan'
                                   ? ColorThemeStyle.redPrimary
                                   : Colors.black,
@@ -148,7 +148,7 @@ class TicketCard extends StatelessWidget {
                               : ticket.status == 'Selesai'
                                   ? ColorThemeStyle.green100
                                   : ticket.status == 'In Progress'
-                                      ? Colors.orange
+                                      ? ColorThemeStyle.yellow
                                       : ticket.status == 'Dibatalkan'
                                           ? ColorThemeStyle.redPrimary
                                           : Colors.black,
@@ -193,15 +193,19 @@ class TicketCard extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 4),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                        color: ticket.ticketType == 'Gold'
-                            ? Colors.amber.shade400
-                            : ticket.ticketType == 'Silver'
-                                ? const Color(0xFFC0C0C0)
-                                : ticket.ticketType == 'Reguler'
-                                    ? ColorThemeStyle.blue60
-                                    : Colors.black,
-                        borderRadius: BorderRadius.circular(4)),
+                    decoration: ticket.status == 'Ditugaskan'
+                        ? BoxDecoration(
+                            gradient: ColorThemeStyle.gradientRed,
+                            borderRadius: BorderRadius.circular(4))
+                        : BoxDecoration(
+                            color: ticket.status == 'Selesai'
+                                ? ColorThemeStyle.green100
+                                : ticket.status == 'In Progress'
+                                    ? ColorThemeStyle.yellow
+                                    : ticket.status == 'Dibatalkan'
+                                        ? ColorThemeStyle.redPrimary
+                                        : Colors.black,
+                            borderRadius: BorderRadius.circular(4)),
                     child: Text(
                       ticket.ticketType,
                       style: TextStyleWidget.bodyB3(

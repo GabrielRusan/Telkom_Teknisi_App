@@ -19,16 +19,19 @@ class HistoricTicketPage extends StatefulWidget {
 class _HistoricTicketPageState extends State<HistoricTicketPage> {
   @override
   void initState() {
-    context.read<HistoricTicketBloc>().add(FetchHistoricTicket());
+    // context.read<HistoricTicketBloc>().add(FetchHistoricTicket());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
+        elevation: 3,
+        shadowColor: Colors.grey.withOpacity(0.2),
         leading: const SizedBox(),
         centerTitle: true,
         title: Text(
@@ -52,21 +55,42 @@ class _HistoricTicketPageState extends State<HistoricTicketPage> {
                   message:
                       'Uppss maaf, anda belum memiliki riwayat pengerjaan!');
             }
-            return ListView.builder(
-              itemBuilder: (context, index) {
-                final ticket = state.result[index];
-                return Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                  child: TicketCard(
-                      ticket: ticket,
-                      onTapCard: () {
-                        Navigator.of(context).pushNamed(
-                            MyRoutes.detailTicketPage,
-                            arguments: ticket);
-                      }),
-                );
-              },
-              itemCount: state.result.length,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 26,
+                  ),
+                  Text(
+                    'Tasks Selesai',
+                    style: TextStyleWidget.titleT2(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        final ticket = state.result[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 16, left: 8, right: 8),
+                          child: TicketCard(
+                              ticket: ticket,
+                              onTapCard: () {
+                                Navigator.of(context).pushNamed(
+                                    MyRoutes.detailTicketPage,
+                                    arguments: ticket);
+                              }),
+                        );
+                      },
+                      itemCount: state.result.length,
+                    ),
+                  ),
+                ],
+              ),
             );
           }
           return TryAgainWidget(

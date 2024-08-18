@@ -18,7 +18,10 @@ import 'package:ticket/data/repositories/ticket_repository_impl.dart';
 import 'package:ticket/domain/repositories/ticket_repository.dart';
 import 'package:ticket/domain/usecases/get_active_ticket.dart';
 import 'package:ticket/domain/usecases/get_historic_ticket.dart';
+import 'package:ticket/domain/usecases/update_ticket_status.dart';
+import 'package:ticket/presentation/blocs/active_ticket_bloc/active_ticket_bloc.dart';
 import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
+import 'package:ticket/presentation/blocs/update_ticket_bloc/update_ticket_bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -52,12 +55,16 @@ Future<void> init() async {
       () => GetActiveTicket(ticketRepository: locator()));
   locator.registerLazySingleton(
       () => GetHistoricTicket(ticketRepository: locator()));
+  locator.registerLazySingleton(
+      () => UpdateTicketStatus(ticketRepository: locator()));
 
   //blocs
   locator.registerFactory(() => LoginBloc(locator()));
   locator.registerFactory(() => SplashScreenBloc(locator()));
   locator.registerFactory(() => HomepageBloc());
   locator.registerFactory(() => HistoricTicketBloc(locator()));
+  locator.registerFactory(() => ActiveTicketBloc(locator()));
+  locator.registerFactory(() => UpdateTicketBloc(locator()));
 
   // network info
   locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));

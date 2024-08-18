@@ -9,7 +9,9 @@ import 'package:core/utils/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:telkom_teknisi_app/injection.dart' as di;
+import 'package:ticket/presentation/blocs/active_ticket_bloc/active_ticket_bloc.dart';
 import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
+import 'package:ticket/presentation/blocs/update_ticket_bloc/update_ticket_bloc.dart';
 import 'package:ticket/presentation/pages/detail_ticket_page.dart';
 
 void main() async {
@@ -38,6 +40,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<HistoricTicketBloc>(
           create: (_) => di.locator<HistoricTicketBloc>(),
+        ),
+        BlocProvider<ActiveTicketBloc>(
+          create: (_) => di.locator<ActiveTicketBloc>(),
+        ),
+        BlocProvider<UpdateTicketBloc>(
+          create: (_) => di.locator<UpdateTicketBloc>(),
         ),
       ],
       child: MaterialApp(

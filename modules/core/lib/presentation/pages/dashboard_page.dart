@@ -1,9 +1,8 @@
-import 'package:core/styles/color_theme_style.dart';
 import 'package:core/styles/text_style_widget.dart';
+import 'package:core/utils/dummys.dart';
 import 'package:core/utils/routes.dart';
 import 'package:core/widgets/bottom_navbar_widget.dart';
 import 'package:core/widgets/dashboard_background.dart';
-import 'package:core/widgets/dashboard_card_small.dart';
 import 'package:core/widgets/dashboard_card_widget.dart';
 import 'package:core/widgets/dashboard_header.dart';
 import 'package:core/widgets/indicator.dart';
@@ -16,34 +15,14 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Ticket ticket = Ticket(
-        ticketId: '1',
-        title: 'title',
-        customerName: 'customerName',
-        ticketType: 'Gold',
-        note: 'note',
-        createdAt: DateTime.now(),
-        address: 'address',
-        status: 'Ditugaskan',
-        customerNoHp: '018127121');
-    Ticket ticket2 = Ticket(
-        ticketId: '1',
-        title: 'title',
-        customerName: 'customerName',
-        ticketType: 'Gold',
-        note: 'note',
-        createdAt: DateTime.now(),
-        address: 'address',
-        status: 'In Progress',
-        customerNoHp: '018127121');
     List<Ticket> listTicket = [
-      ticket2,
-      ticket,
-      ticket,
-      ticket,
-      ticket,
-      ticket,
-      ticket
+      dummyTicket2,
+      dummyTicket,
+      dummyTicket,
+      dummyTicket,
+      dummyTicket,
+      dummyTicket,
+      dummyTicket
     ];
     return Scaffold(
       body: SingleChildScrollView(
@@ -80,7 +59,7 @@ class DashboardPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      shrinkWrap: true,
+                      // shrinkWrap: true,
                       itemBuilder: (context, index) {
                         final ticket = listTicket[index];
                         return Padding(
