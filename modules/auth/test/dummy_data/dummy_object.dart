@@ -1,14 +1,20 @@
 import 'package:auth/data/models/user_model.dart';
 import 'package:auth/domain/entities/user.dart';
 
-const UserModel tUserModel = UserModel(
-  userId: 1,
-  nama: 'joko',
-  username: 'username',
-);
+UserModel tUserModel = UserModel(
+    idteknisi: 1,
+    nama: 'nama',
+    sektor: 'sektor',
+    username: 'username',
+    pass: 'pass',
+    createdAt: DateTime(2024, 1, 1, 0, 0, 0),
+    updatedAt: DateTime(2024, 1, 1, 0, 0, 0));
 
-const User tUser = User(
-  userId: 1,
-  nama: 'joko',
-  username: 'username',
-);
+User tUser = User(
+    idteknisi: 1,
+    nama: 'nama',
+    sektor: 'sektor',
+    username: 'username',
+    pass: 'pass',
+    createdAt: DateTime(2024, 1, 1, 0, 0, 0),
+    updatedAt: DateTime(2024, 1, 1, 0, 0, 0));

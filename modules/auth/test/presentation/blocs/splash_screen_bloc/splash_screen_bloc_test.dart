@@ -24,8 +24,7 @@ void main() {
   blocTest<SplashScreenBloc, SplashScreenState>(
     'Should emit [Loading, Success] when Fetch data is Successful',
     build: () {
-      when(mockGetUserData.execute())
-          .thenAnswer((_) async => const Right(tUser));
+      when(mockGetUserData.execute()).thenAnswer((_) async => Right(tUser));
       return splashScreenBloc;
     },
     act: (bloc) => bloc.add(FetchUserData()),

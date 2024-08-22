@@ -6,7 +6,6 @@
 import 'dart:async' as _i9;
 
 import 'package:core/utils/failure.dart' as _i15;
-import 'package:core/utils/network_info.dart' as _i17;
 import 'package:dartz/dartz.dart' as _i7;
 import 'package:dio/src/adapter.dart' as _i3;
 import 'package:dio/src/cancel_token.dart' as _i10;
@@ -1086,19 +1085,4 @@ class MockTicketRepository extends _i1.Mock implements _i14.TicketRepository {
           ),
         )),
       ) as _i9.Future<_i7.Either<_i15.Failure, bool>>);
-}
-
-/// A class which mocks [NetworkInfo].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockNetworkInfo extends _i1.Mock implements _i17.NetworkInfo {
-  MockNetworkInfo() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i9.Future<bool> get isConnected => (super.noSuchMethod(
-        Invocation.getter(#isConnected),
-        returnValue: _i9.Future<bool>.value(false),
-      ) as _i9.Future<bool>);
 }

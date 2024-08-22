@@ -11,16 +11,16 @@ environment:
 dependencies:
   ticket:
     path: ../ticket
+  profile:
+    path: ../profile
   equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.10+1
   google_fonts: ^6.2.1
-  data_connection_checker:
-    git:
-      url: https://github.com/chornthorn/data_connection_checker.git
-      ref: master
   flutter_bloc: ^8.1.6
+  rxdart: ^0.28.0
+
 
 dev_dependencies:
   flutter_test:

@@ -4,6 +4,7 @@ import 'package:auth/presentation/pages/login_screen.dart';
 import 'package:auth/presentation/pages/splash_screen.dart';
 import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
 import 'package:core/presentation/pages/homepage.dart';
+import 'package:core/utils/route_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:core/utils/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,8 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: MyRoutes.homePage,
+        navigatorObservers: [routeObserver],
+        initialRoute: MyRoutes.splashScreen,
         routes: {
           MyRoutes.splashScreen: (_) => const SplashScreen(),
           MyRoutes.loginScreen: (_) => const LoginScreen(),

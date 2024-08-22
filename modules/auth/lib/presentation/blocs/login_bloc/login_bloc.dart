@@ -1,5 +1,6 @@
 import 'package:auth/domain/usecases/login.dart';
 import 'package:auth/utils/login_status.dart';
+import 'package:core/utils/transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -9,7 +10,8 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final Login usecase;
   LoginBloc(this.usecase) : super(const LoginState()) {
-    on<SignIn>(_onSignIn);
+    on<SignIn>(_onSignIn,
+        transformer: throttleDroppable(const Duration(seconds: 1)));
     on<UsernameChanged>(_onUsernameChanged);
     on<PasswordChanged>(_onPasswordChanged);
   }

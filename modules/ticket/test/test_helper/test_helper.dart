@@ -1,4 +1,3 @@
-import 'package:core/utils/network_info.dart';
 import 'package:dio/dio.dart';
 import 'package:mockito/annotations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +9,5 @@ import 'package:ticket/domain/repositories/ticket_repository.dart';
   SharedPreferences,
   TicketRemoteDatasource,
   TicketRepository,
-  NetworkInfo,
 ])
 void main() {}

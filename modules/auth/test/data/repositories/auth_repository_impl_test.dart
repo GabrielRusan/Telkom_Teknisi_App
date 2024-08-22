@@ -98,7 +98,7 @@ void main() {
       final result = await repository.getUserData();
 
       //assert
-      expect(result, const Right(tUser));
+      expect(result, Right(tUser));
     });
 
     test('should return TokenFailure when token is invalid or expired',

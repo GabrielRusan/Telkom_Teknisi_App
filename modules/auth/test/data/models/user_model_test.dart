@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:auth/data/models/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 import '../../dummy_data/dummy_object.dart';
 import '../../json_reader.dart';
@@ -25,9 +26,13 @@ void main() {
     test('should return a correct json map from model', () {
       // arrange
       final Map<String, dynamic> jsonMap = {
-        "userId": 1,
+        "idteknisi": 1,
+        "nama": "nama",
+        "sektor": "sektor",
         "username": "username",
-        "nama": "joko"
+        "pass": "pass",
+        "createdAt": "2024-01-01 00:00:00",
+        "updatedAt": DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
       };
 
       // act

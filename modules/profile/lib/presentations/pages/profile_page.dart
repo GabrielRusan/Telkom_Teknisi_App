@@ -1,4 +1,7 @@
+import 'package:core/styles/color_theme_style.dart';
 import 'package:core/styles/text_style_widget.dart';
+import 'package:core/utils/routes.dart';
+import 'package:core/widgets/bottom_navbar_widget.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -16,32 +19,43 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text("Richie Lorie",
-                      style:
-                          TextStyleWidget.bodyB1(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FloatingActionButton.extended(
-                        onPressed: () {},
-                        heroTag: 'follow',
-                        elevation: 0,
-                        label: const Text("Follow"),
-                        icon: const Icon(Icons.person_add_alt_1),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text("Nama Teknisi",
+                            style: TextStyleWidget.titleT2(
+                                fontWeight: FontWeight.bold)),
                       ),
-                      const SizedBox(width: 16.0),
-                      FloatingActionButton.extended(
-                        onPressed: () {},
-                        heroTag: 'mesage',
-                        elevation: 0,
-                        backgroundColor: Colors.red,
-                        label: const Text("Message"),
-                        icon: const Icon(Icons.message_rounded),
+                      const SizedBox(
+                        width: 8,
                       ),
+                      const Icon(Icons.edit_outlined)
+                    ],
+                  ),
+                  // const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Text("username",
+                          style: TextStyleWidget.labelL1(
+                              fontWeight: FontWeight.w300)),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Icon(
+                        Icons.edit_outlined,
+                        size: 20,
+                        color: Colors.grey.shade400,
+                      )
                     ],
                   ),
                   const SizedBox(height: 16),
+
                   const _ProfileInfoRow()
                 ],
               ),
@@ -49,65 +63,79 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }
 
 class _ProfileInfoRow extends StatelessWidget {
-  const _ProfileInfoRow({Key? key}) : super(key: key);
-
-  final List<ProfileInfoItem> _items = const [
-    ProfileInfoItem("Posts", 900),
-    ProfileInfoItem("Followers", 120),
-    ProfileInfoItem("Following", 200),
-  ];
+  const _ProfileInfoRow();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
-      constraints: const BoxConstraints(maxWidth: 400),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _items
-            .map((item) => Expanded(
-                    child: Row(
-                  children: [
-                    if (_items.indexOf(item) != 0) const VerticalDivider(),
-                    Expanded(child: _singleItem(context, item)),
-                  ],
-                )))
-            .toList(),
-      ),
-    );
-  }
-
-  Widget _singleItem(BuildContext context, ProfileInfoItem item) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              item.value.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
+        height: 80,
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Aktif',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.green),
+                          ),
+                        ),
+                        Text('Status', style: TextStyleWidget.bodyB1())
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
-          ),
-          Text(item.title, style: TextStyleWidget.bodyB1())
-        ],
-      );
-}
-
-class ProfileInfoItem {
-  final String title;
-  final int value;
-  const ProfileInfoItem(this.title, this.value);
+            Expanded(
+              child: Row(
+                children: [
+                  const VerticalDivider(),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            '156',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        Text('Total Tasks Selesai',
+                            style: TextStyleWidget.bodyB1())
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ));
+  }
 }
 
 class _TopPortion extends StatelessWidget {
-  const _TopPortion({Key? key}) : super(key: key);
+  const _TopPortion();
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +148,31 @@ class _TopPortion extends StatelessWidget {
               gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
-                  colors: [Color(0xff0043ba), Color(0xff006df1)]),
+                  colors: [
+                    Color(0xFFB31245),
+                    Color(0xFFE52D27),
+                  ]),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(50),
                 bottomRight: Radius.circular(50),
               )),
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(MyRoutes.splashScreen, (_) => true);
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 32, right: 16),
+              child: const Icon(
+                Icons.logout_outlined,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+          ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -136,12 +184,17 @@ class _TopPortion extends StatelessWidget {
               children: [
                 Container(
                   decoration: const BoxDecoration(
-                    color: Colors.black,
+                    color: ColorThemeStyle.grey80,
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')),
+                    // image: DecorationImage(
+                    //     fit: BoxFit.cover,
+                    //     image: NetworkImage(
+                    //         'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')),
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 50,
+                    color: ColorThemeStyle.grey50,
                   ),
                 ),
                 Positioned(

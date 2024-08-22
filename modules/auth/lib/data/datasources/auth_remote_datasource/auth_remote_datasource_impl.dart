@@ -12,63 +12,65 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({required this.sharedPref, required this.dio});
 
   @override
-  Future<UserModel> getUserData() async {
-    final String? token = sharedPref.getString("token");
-    final String? userId = sharedPref.getString("userId");
-
-    if (token == null || userId == null) {
-      throw NoCredentialException();
-    }
-
+  Future<bool> logIn(
+      {required String username, required String password}) async {
     try {
-      final response = await dio.get("$BASE_URL/user/$userId",
-          options: Options(headers: {'Authorization': 'Bearer $token'}));
+      final response = await dio.post("$BASE_URL/login/", data: {
+        "username": username,
+        "pass": password,
+      });
 
-      if (response.statusCode == 200) {
-        return UserModel.fromJson(response.data);
-      } else if (response.statusCode == 401) {
-        throw InvalidTokenException();
-      } else {
-        throw ServerException();
-      }
+      final data = response.data;
+
+      await sharedPref.setString("token", data["token"]);
+      await sharedPref.setString("idteknisi", data["idteknisi"].toString());
+      return true;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {
         throw ConnectionException();
-      } else {
-        throw ServerException();
+      } else if (e.type == DioExceptionType.badResponse) {
+        if (e.response?.statusCode == 401) {
+          throw WrongCombinationException(e.response?.data['message']);
+        }
       }
+      throw ServerException();
     }
   }
 
   @override
-  Future<bool> logIn(
-      {required String username, required String password}) async {
+  Future<UserModel> getUserData() async {
+    final String? token = sharedPref.getString("token");
+    final String? idteknisi = sharedPref.getString("idteknisi");
+
+    if (token == null || idteknisi == null) {
+      throw NoCredentialException();
+    }
+
     try {
-      final response = await dio.post("$BASE_URL/login",
-          data: FormData.fromMap({
-            "username": username,
-            "password": password,
-          }));
+      final response = await dio.get("$BASE_URL/teknisi/$idteknisi",
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
 
-      if (response.statusCode == 200) {
-        final data = response.data;
-
-        await sharedPref.setString("token", data["token"]);
-        await sharedPref.setString("userId", data["userId"].toString());
-        return true;
-      } else if (response.statusCode == 401) {
-        throw WrongCombinationException(response.data['message']);
-      } else {
-        throw ServerException();
-      }
+      return UserModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {
         throw ConnectionException();
-      } else {
-        throw ServerException();
+      } else if (e.type == DioExceptionType.badResponse) {
+        switch (e.response?.statusCode) {
+          case 401:
+            throw InvalidTokenException();
+          case 404:
+            throw NotFoundException();
+        }
       }
+
+      throw ServerException();
     }
+  }
+
+  @override
+  Future<bool> logOut() async {
+    return await sharedPref.clear();
   }
 }

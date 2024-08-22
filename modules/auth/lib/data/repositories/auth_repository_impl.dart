@@ -43,4 +43,9 @@ class AuthRepositoryImpl implements AuthRepository {
           ConnectionFailure('Gagal menghubungkan dengan server!'));
     }
   }
+
+  @override
+  Future<bool> logOut() async {
+    return await authRemoteDataSource.logOut();
+  }
 }

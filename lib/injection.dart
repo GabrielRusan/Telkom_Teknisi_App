@@ -7,7 +7,6 @@ import 'package:auth/domain/usecases/login.dart';
 import 'package:auth/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:auth/presentation/blocs/splash_screen_bloc/splash_screen_bloc.dart';
 import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
-import 'package:core/utils/network_info.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -65,7 +64,4 @@ Future<void> init() async {
   locator.registerFactory(() => HistoricTicketBloc(locator()));
   locator.registerFactory(() => ActiveTicketBloc(locator()));
   locator.registerFactory(() => UpdateTicketBloc(locator()));
-
-  // network info
-  locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
 }

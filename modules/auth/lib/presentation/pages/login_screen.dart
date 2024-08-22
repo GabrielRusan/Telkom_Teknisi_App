@@ -4,6 +4,8 @@ import 'package:auth/presentation/widgets/login_snackbar.dart';
 import 'package:auth/presentation/widgets/text_field_password.dart';
 import 'package:auth/presentation/widgets/text_field_username.dart';
 import 'package:auth/utils/login_status.dart';
+import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
+import 'package:core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +18,9 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         if (state.loginStatus == LoginStatus.failed) {
           errorSnackbar(context, 'Login gagal!', state.errorMessage);
+        } else if (state.loginStatus == LoginStatus.success) {
+          Navigator.of(context).pushReplacementNamed(MyRoutes.homePage);
+          context.read<HomepageBloc>().add(const OnChanedIndex(index: 0));
         }
       },
       child: Scaffold(

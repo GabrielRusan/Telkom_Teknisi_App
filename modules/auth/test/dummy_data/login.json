@@ -1,4 +1,6 @@
 {
+    "message" : "message",
+    "token": "token",
     "idteknisi": 1,
     "nama": "nama",
     "sektor": "sektor",

@@ -17,12 +17,12 @@ void main() {
 
   test('should get valid user data when everything is allright', () async {
     //arrange
-    when(mockRepo.getUserData()).thenAnswer((_) async => const Right(tUser));
+    when(mockRepo.getUserData()).thenAnswer((_) async => Right(tUser));
 
     //act
     final result = await usecase.execute();
 
     //assert
-    expect(result, const Right(tUser));
+    expect(result, Right(tUser));
   });
 }

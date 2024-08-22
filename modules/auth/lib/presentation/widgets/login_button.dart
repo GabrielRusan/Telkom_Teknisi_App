@@ -11,24 +11,27 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-      return ButtonWidget.defaultContainer(
-          child: state.loginStatus == LoginStatus.inProggres
-              ? const Center(
-                  child: CircularProgressIndicator(
-                  color: Colors.white,
-                ))
-              : Text(
-                  'Masuk',
-                  style: TextStyleWidget.bodyB1(
-                    fontWeight: FontWeight.w600,
-                    color: ColorThemeStyle.white100,
-                  ),
-                ),
-          onPressed: () {
-            FocusScope.of(context).unfocus();
-            context.read<LoginBloc>().add(SignIn());
-          });
-    });
+    return BlocBuilder<LoginBloc, LoginState>(
+        buildWhen: (previous, current) =>
+            current.loginStatus != previous.loginStatus,
+        builder: (context, state) {
+          return ButtonWidget.defaultContainer(
+              child: state.loginStatus == LoginStatus.inProggres
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ))
+                  : Text(
+                      'Masuk',
+                      style: TextStyleWidget.bodyB1(
+                        fontWeight: FontWeight.w600,
+                        color: ColorThemeStyle.white100,
+                      ),
+                    ),
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                context.read<LoginBloc>().add(SignIn());
+              });
+        });
   }
 }

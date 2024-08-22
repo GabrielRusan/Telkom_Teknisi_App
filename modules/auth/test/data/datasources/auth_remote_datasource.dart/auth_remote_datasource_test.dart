@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auth/data/datasources/auth_remote_datasource/auth_remote_datasource_impl.dart';
 import 'package:core/utils/exception.dart';
 import 'package:dio/dio.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../dummy_data/dummy_object.dart';
+import '../../../json_reader.dart';
 import '../../../test_helper/test_helper.mocks.dart';
 
 void main() {
@@ -21,19 +24,30 @@ void main() {
     );
   });
 
-  const String tToken = 'tToken';
-  const String tUserId = 'tUserId';
+  const String tToken = 'token';
+  const String tIdteknisi = '1';
+
+  group('logout test', () {
+    test('Should return true when success clear token and id from local',
+        () async {
+      //arrange
+      when(mockSharedPreferences.clear()).thenAnswer((_) async => true);
+      //act
+      final result = await authRemoteDataSourceImpl.logOut();
+      //assert
+      expect(result, true);
+    });
+  });
 
   group("login test", () {
-    test('should get token and userId from API when login is successful',
+    test('should get token and idteknisi from API when login is successful',
         () async {
       // arrange
       when(mockDio.post(any, data: anyNamed('data'))).thenAnswer(
         (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-          data: {'token': 'test_token', 'userId': 'test_userId'},
-        ),
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 200,
+            data: jsonDecode(readJson('dummy_data/login.json'))),
       );
 
       // Setup SharedPreferences mock
@@ -45,10 +59,9 @@ void main() {
           username: 'test_user', password: 'test_pass');
 
       // assert
-      // Verify that the token and userId were saved
-      verify(mockSharedPreferences.setString("token", 'test_token')).called(1);
-      verify(mockSharedPreferences.setString("userId", 'test_userId'))
-          .called(1);
+      // Verify that the token and idteknisi were saved
+      verify(mockSharedPreferences.setString("token", 'token')).called(1);
+      verify(mockSharedPreferences.setString("idteknisi", '1')).called(1);
       expect(result, true);
     });
 
@@ -56,13 +69,14 @@ void main() {
         'should throw WrongCombinationException when either not found username nor wrong password',
         () async {
       // arrange
-      when(mockDio.post(any, data: anyNamed('data'))).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 401,
-          data: {'message': 'Username Not Found'},
-        ),
-      );
+      when(mockDio.post(any, data: anyNamed('data'))).thenThrow(
+          DioException.badResponse(
+              statusCode: 401,
+              requestOptions: RequestOptions(),
+              response: Response(
+                  requestOptions: RequestOptions(),
+                  statusCode: 401,
+                  data: {'message': 'username salah'})));
 
       // act
       final response = authRemoteDataSourceImpl.logIn(
@@ -91,13 +105,14 @@ void main() {
     test('should throw ServerException when call to api is not successful',
         () async {
       // arrange
-      when(mockDio.post(any, data: anyNamed('data'))).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-          data: {'message': 'Server Down'},
-        ),
-      );
+      when(mockDio.post(any, data: anyNamed('data'))).thenThrow(
+          DioException.badResponse(
+              statusCode: 501,
+              requestOptions: RequestOptions(),
+              response: Response(
+                  requestOptions: RequestOptions(),
+                  statusCode: 501,
+                  data: {'message': ''})));
 
       // act
       final response = authRemoteDataSourceImpl.logIn(
@@ -112,17 +127,12 @@ void main() {
     test('should get user data from API when call is successful', () async {
       // arrange
       when(mockSharedPreferences.getString("token")).thenReturn(tToken);
-      when(mockSharedPreferences.getString("userId")).thenReturn(tUserId);
+      when(mockSharedPreferences.getString("idteknisi")).thenReturn(tIdteknisi);
       when(mockDio.get(any, options: anyNamed('options'))).thenAnswer(
         (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-          data: {
-            'userId': 1,
-            'nama': 'joko',
-            'username': 'username',
-          },
-        ),
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 200,
+            data: jsonDecode(readJson('dummy_data/user.json'))),
       );
 
       // act
@@ -136,7 +146,7 @@ void main() {
         () async {
       // arrange
       when(mockSharedPreferences.getString("token")).thenReturn(tToken);
-      when(mockSharedPreferences.getString("userId")).thenReturn(tUserId);
+      when(mockSharedPreferences.getString("idteknisi")).thenReturn(tIdteknisi);
       when(mockDio.get(any, options: anyNamed('options'))).thenThrow(
           DioException.connectionError(
               requestOptions: RequestOptions(path: ''),
@@ -150,11 +160,11 @@ void main() {
     });
 
     test(
-        'should throw NoCredentialException when token or userId not found in shared pref',
+        'should throw NoCredentialException when token or idteknisi not found in shared pref',
         () async {
       // arrange
       when(mockSharedPreferences.getString("token")).thenReturn(null);
-      when(mockSharedPreferences.getString("userId")).thenReturn(tUserId);
+      when(mockSharedPreferences.getString("idteknisi")).thenReturn(tIdteknisi);
 
       // act
       final response = authRemoteDataSourceImpl.getUserData();
@@ -167,14 +177,13 @@ void main() {
         () async {
       // arrange
       when(mockSharedPreferences.getString("token")).thenReturn(tToken);
-      when(mockSharedPreferences.getString("userId")).thenReturn(tUserId);
-      when(mockDio.get(any, options: anyNamed('options'))).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 401,
-          data: {'message': 'Invalid Token'},
-        ),
-      );
+      when(mockSharedPreferences.getString("idteknisi")).thenReturn(tIdteknisi);
+      when(mockDio.get(any, options: anyNamed('options'))).thenThrow(
+          DioException.badResponse(
+              statusCode: 401,
+              requestOptions: RequestOptions(path: ''),
+              response:
+                  Response(requestOptions: RequestOptions(), statusCode: 401)));
 
       // act
       final response = authRemoteDataSourceImpl.getUserData();
@@ -187,14 +196,14 @@ void main() {
         () async {
       // arrange
       when(mockSharedPreferences.getString("token")).thenReturn(tToken);
-      when(mockSharedPreferences.getString("userId")).thenReturn(tUserId);
-      when(mockDio.get(any, options: anyNamed('options'))).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-          data: {'message': 'Server Down'},
-        ),
-      );
+      when(mockSharedPreferences.getString("idteknisi")).thenReturn(tIdteknisi);
+      when(mockDio.get(any, options: anyNamed('options')))
+          .thenThrow(DioException.badResponse(
+              statusCode: 500,
+              requestOptions: RequestOptions(path: ''),
+              response: Response(
+                requestOptions: RequestOptions(),
+              )));
 
       // act
       final response = authRemoteDataSourceImpl.getUserData();
