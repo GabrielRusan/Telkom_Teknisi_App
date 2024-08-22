@@ -1,8 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:core/styles/color_theme_style.dart';
 import 'package:core/styles/text_style_widget.dart';
 import 'package:core/utils/routes.dart';
 import 'package:core/widgets/bottom_navbar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -24,9 +27,19 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 30),
-                        child: Text("Nama Teknisi",
-                            style: TextStyleWidget.titleT2(
-                                fontWeight: FontWeight.bold)),
+                        child: BlocBuilder<ProfileBloc, ProfileState>(
+                          builder: (context, state) {
+                            if (state is ProfileSuccess) {
+                              return Text(state.user.nama,
+                                  style: TextStyleWidget.titleT2(
+                                      fontWeight: FontWeight.w500));
+                            } else {
+                              return Text('....',
+                                  style: TextStyleWidget.titleT2(
+                                      fontWeight: FontWeight.w300));
+                            }
+                          },
+                        ),
                       ),
                       const SizedBox(
                         width: 8,
@@ -41,9 +54,19 @@ class ProfilePage extends StatelessWidget {
                       const SizedBox(
                         width: 20,
                       ),
-                      Text("username",
-                          style: TextStyleWidget.labelL1(
-                              fontWeight: FontWeight.w300)),
+                      BlocBuilder<ProfileBloc, ProfileState>(
+                        builder: (context, state) {
+                          if (state is ProfileSuccess) {
+                            return Text(state.user.username,
+                                style: TextStyleWidget.labelL1(
+                                    fontWeight: FontWeight.w300));
+                          } else {
+                            return Text('....',
+                                style: TextStyleWidget.labelL1(
+                                    fontWeight: FontWeight.w300));
+                          }
+                        },
+                      ),
                       const SizedBox(
                         width: 8,
                       ),
@@ -86,17 +109,27 @@ class _ProfileInfoRow extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Aktif',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.green),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BlocBuilder<ProfileBloc, ProfileState>(
+                            builder: (context, state) {
+                              if (state is ProfileSuccess) {
+                                return Text(state.user.sektor.toUpperCase(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ));
+                              } else {
+                                return const Text('...',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ));
+                              }
+                            },
                           ),
                         ),
-                        Text('Status', style: TextStyleWidget.bodyB1())
+                        Text('Sektor', style: TextStyleWidget.bodyB1())
                       ],
                     ),
                   )
@@ -161,8 +194,23 @@ class _TopPortion extends StatelessWidget {
           alignment: Alignment.topRight,
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(MyRoutes.splashScreen, (_) => true);
+              AwesomeDialog(
+                context: context,
+                headerAnimationLoop: false,
+                dialogType: DialogType.warning,
+                animType: AnimType.scale,
+                titleTextStyle:
+                    TextStyleWidget.headlineH3(fontWeight: FontWeight.w500),
+                descTextStyle: TextStyleWidget.bodyB1(),
+                title: 'Warning!',
+                desc: 'Apakah anda yakin ingin logout?',
+                btnOkOnPress: () {
+                  context.read<ProfileBloc>().add(SignOut());
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      MyRoutes.splashScreen, (_) => true);
+                },
+                btnCancelOnPress: () {},
+              ).show();
             },
             child: Container(
               margin: const EdgeInsets.only(top: 32, right: 16),

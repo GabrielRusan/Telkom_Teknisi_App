@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/utils/routes.dart';
 import 'package:core/utils/route_observer.dart';
+import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -40,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> with RouteAware {
         if (state is SplashScreenFailed) {
           Navigator.of(context).pushReplacementNamed(MyRoutes.loginScreen);
         } else if (state is SplashScreenSuccess) {
+          context.read<ProfileBloc>().add(FetchUserProfileData());
           Navigator.of(context).pushReplacementNamed(MyRoutes.homePage);
         }
       },

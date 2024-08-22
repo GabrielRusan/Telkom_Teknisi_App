@@ -14,7 +14,11 @@ dependencies:
   
   core:
     path: ../core
+  auth:
+    path: ../auth
   flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  awesome_dialog: ^3.2.1
 
 dev_dependencies:
   flutter_test:

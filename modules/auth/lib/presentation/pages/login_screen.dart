@@ -8,6 +8,7 @@ import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
 import 'package:core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -21,6 +22,7 @@ class LoginScreen extends StatelessWidget {
         } else if (state.loginStatus == LoginStatus.success) {
           Navigator.of(context).pushReplacementNamed(MyRoutes.homePage);
           context.read<HomepageBloc>().add(const OnChanedIndex(index: 0));
+          context.read<ProfileBloc>().add(FetchUserProfileData());
         }
       },
       child: Scaffold(

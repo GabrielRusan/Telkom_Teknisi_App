@@ -14,6 +14,8 @@ dependencies:
   
   core:
     path: ../core
+  profile:
+    path: ../profile
   equatable: ^2.0.5
   shared_preferences: ^2.2.3
   http: ^1.2.2

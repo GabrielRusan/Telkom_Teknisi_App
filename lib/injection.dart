@@ -4,12 +4,14 @@ import 'package:auth/data/repositories/auth_repository_impl.dart';
 import 'package:auth/domain/repositories/auth_repository.dart';
 import 'package:auth/domain/usecases/get_user_data.dart';
 import 'package:auth/domain/usecases/login.dart';
+import 'package:auth/domain/usecases/logout.dart';
 import 'package:auth/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:auth/presentation/blocs/splash_screen_bloc/splash_screen_bloc.dart';
 import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticket/data/datasources/ticket_remote_datasource/ticket_remote_datasource.dart';
 import 'package:ticket/data/datasources/ticket_remote_datasource/ticket_remote_datasource_impl.dart';
@@ -30,8 +32,9 @@ Future<void> init() async {
     () => SharedPreferences.getInstance(),
   );
   await locator.isReady<SharedPreferences>();
-  locator.registerLazySingleton<Dio>(
-      () => Dio(BaseOptions(connectTimeout: const Duration(seconds: 5))));
+  locator.registerLazySingleton<Dio>(() => Dio(BaseOptions(
+      connectTimeout: const Duration(seconds: 3),
+      receiveTimeout: const Duration(seconds: 3))));
   locator.registerLazySingleton(() => DataConnectionChecker());
 
   //datasources
@@ -50,6 +53,7 @@ Future<void> init() async {
   //usecases
   locator.registerLazySingleton(() => Login(repository: locator()));
   locator.registerLazySingleton(() => GetUserData(repository: locator()));
+  locator.registerLazySingleton(() => Logout(repository: locator()));
   locator.registerLazySingleton(
       () => GetActiveTicket(ticketRepository: locator()));
   locator.registerLazySingleton(
@@ -64,4 +68,5 @@ Future<void> init() async {
   locator.registerFactory(() => HistoricTicketBloc(locator()));
   locator.registerFactory(() => ActiveTicketBloc(locator()));
   locator.registerFactory(() => UpdateTicketBloc(locator()));
+  locator.registerFactory(() => ProfileBloc(locator(), locator()));
 }
