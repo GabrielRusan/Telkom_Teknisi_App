@@ -6,6 +6,7 @@ import 'package:core/widgets/bottom_navbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
+import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -144,14 +145,28 @@ class _ProfileInfoRow extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            '156',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BlocBuilder<HistoricTicketBloc,
+                              HistoricTicketState>(
+                            builder: (context, state) {
+                              if (state is HistoricTicketLoaded) {
+                                return Text(
+                                  '${state.selesaiAllCount}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                );
+                              }
+                              return const Text(
+                                '...',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         Text('Total Tasks Selesai',

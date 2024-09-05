@@ -12,46 +12,43 @@ class ActiveTicketPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        BlocBuilder<ActiveTicketBloc, ActiveTicketState>(
-          builder: (context, state) {
-            if (state is ActiveTicketLoading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: ColorThemeStyle.redPrimary,
-                ),
-              );
-            } else if (state is ActiveTicketLoaded) {
-              if (state.result.isEmpty) {
-                return const AllTaskCompletedWidget();
-              }
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final ticket = state.result[index];
-                  return Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, top: 16),
-                    child: TicketCard(
-                        ticket: ticket,
-                        onTapCard: () {
-                          Navigator.of(context).pushNamed(
-                              MyRoutes.detailTicketPage,
-                              arguments: ticket);
-                        }),
-                  );
-                },
-                itemCount: state.result.length,
-              );
-            }
-            return TryAgainWidget(
-              onPressed: () {
-                context.read<ActiveTicketBloc>().add(FetchActiveTicket());
-              },
+    return Expanded(
+      child: BlocBuilder<ActiveTicketBloc, ActiveTicketState>(
+        builder: (context, state) {
+          if (state is ActiveTicketLoading) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ColorThemeStyle.redPrimary,
+              ),
             );
-          },
-        ),
-      ],
+          } else if (state is ActiveTicketLoaded) {
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                final ticket = state.result[index];
+                return Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 16.0, left: 8, right: 8),
+                  child: TicketCard(
+                      ticket: ticket,
+                      onTapCard: () {
+                        Navigator.of(context).pushReplacementNamed(
+                            MyRoutes.detailTicketPage,
+                            arguments: ticket);
+                      }),
+                );
+              },
+              itemCount: state.result.length,
+            );
+          } else if (state is ActiveTicketEmpty) {
+            return const AllTaskCompletedWidget();
+          }
+          return TryAgainWidget(
+            onPressed: () {
+              context.read<ActiveTicketBloc>().add(FetchActiveTicket());
+            },
+          );
+        },
+      ),
     );
   }
 }

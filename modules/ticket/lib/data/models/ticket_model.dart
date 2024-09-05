@@ -1,86 +1,115 @@
 import 'package:equatable/equatable.dart';
+import 'package:ticket/data/models/pelanggan_model.dart';
 import 'package:ticket/domain/entities/ticket.dart';
 
+// List<TiketModel> tiketModelFromJson(String str) =>
+//     List<TiketModel>.from(json.decode(str).map((x) => TiketModel.fromJson(x)));
+
 class TicketModel extends Equatable {
-  final String ticketId;
-  final String title;
-  final String customerName;
-  final String customerNoHp;
-  final String note;
-  final DateTime createdAt;
-  final String address;
+  final int idTiket;
+  final String nomorTiket;
+  final String nomorInternet;
+  final String keluhan;
+  final String type;
   final String status;
-  final String ticketType;
+  final String ket;
+  final String notePelanggan;
+  final PelangganModel pelanggan;
+  final String idOdp;
+  final String namaTeknisi;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const TicketModel({
-    required this.ticketId,
-    required this.title,
-    required this.customerName,
-    required this.note,
-    required this.createdAt,
-    required this.address,
+    required this.idTiket,
+    required this.nomorTiket,
+    required this.nomorInternet,
+    required this.keluhan,
+    required this.type,
     required this.status,
-    required this.customerNoHp,
-    required this.ticketType,
+    required this.ket,
+    required this.notePelanggan,
+    required this.pelanggan,
+    required this.idOdp,
+    required this.namaTeknisi,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory TicketModel.fromJson(Map<String, dynamic> json) => TicketModel(
-        ticketId: json["ticketId"],
-        title: json['title'],
-        customerName: json['customerName'],
-        note: json['note'],
-        createdAt: DateTime.parse(json['createdAt']),
-        address: json['address'],
-        status: json['status'],
-        customerNoHp: json['customerNoHp'],
-        ticketType: json['ticketType'],
+        idTiket: json["idtiket"],
+        nomorTiket: json["nomortiket"],
+        nomorInternet: json["nomorinternet"],
+        keluhan: json["keluhan"],
+        type: json["tipetiket"],
+        status: json["status"],
+        ket: json["ket"],
+        notePelanggan: json["notepelanggan"],
+        pelanggan: PelangganModel.fromTiketJson(json["idpelanggan"]),
+        idOdp: json["idodp"].split(' | ')[1],
+        namaTeknisi: json["idteknisi"].split(' | ')[1],
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
-  factory TicketModel.fromEntity(Ticket ticket) => TicketModel(
-        ticketId: ticket.ticketId,
-        title: ticket.title,
-        customerName: ticket.customerName,
-        note: ticket.note,
-        createdAt: ticket.createdAt,
-        address: ticket.address,
-        status: ticket.status,
-        customerNoHp: ticket.customerNoHp,
-        ticketType: ticket.ticketType,
-      );
-
-  Ticket toEntity() => Ticket(
-      ticketId: ticketId,
-      title: title,
-      customerName: customerName,
-      note: note,
-      createdAt: createdAt,
-      address: address,
-      status: status,
-      customerNoHp: customerNoHp,
-      ticketType: ticketType);
-
-  Map<String, dynamic> toJson() => {
-        'ticketId': ticketId,
-        'title': title,
-        'customerName': customerName,
-        'note': note,
-        'createdAt': createdAt.toIso8601String(),
-        'address': address,
-        'status': status,
-        'customerNoHp': customerNoHp,
-        'ticketType': ticketType,
-      };
+  factory TicketModel.fromEntity(Ticket tiket) => TicketModel(
+      idTiket: tiket.idTiket,
+      nomorTiket: tiket.nomorTiket,
+      nomorInternet: tiket.nomorInternet,
+      keluhan: tiket.keluhan,
+      type: tiket.type,
+      status: tiket.status,
+      ket: tiket.ket,
+      notePelanggan: tiket.notePelanggan,
+      pelanggan: PelangganModel.fromEntity(tiket.pelanggan),
+      idOdp: tiket.idOdp,
+      namaTeknisi: tiket.namaTeknisi,
+      createdAt: tiket.createdAt,
+      updatedAt: tiket.updatedAt);
 
   @override
   List<Object?> get props => [
-        ticketId,
-        title,
-        customerName,
-        note,
+        idTiket,
+        nomorTiket,
+        nomorInternet,
+        keluhan,
+        notePelanggan,
+        pelanggan,
+        idOdp,
+        namaTeknisi,
         createdAt,
-        address,
+        updatedAt,
+        ket,
         status,
-        customerNoHp,
-        ticketType
+        type
       ];
+
+  Ticket toEntity() => Ticket(
+      idTiket: idTiket,
+      nomorTiket: nomorTiket,
+      nomorInternet: nomorInternet,
+      keluhan: keluhan,
+      type: type,
+      status: status,
+      ket: ket,
+      notePelanggan: notePelanggan,
+      pelanggan: pelanggan.toEntity(),
+      idOdp: idOdp,
+      namaTeknisi: namaTeknisi,
+      createdAt: createdAt,
+      updatedAt: updatedAt);
+
+  Map<String, dynamic> toJson() => {
+        "idTiket": idTiket,
+        'nomorTiket': nomorTiket,
+        'nomorInternet': nomorInternet,
+        'keluhan': keluhan,
+        'type': type,
+        'status': status,
+        'ket': ket,
+        'notePelanggan': notePelanggan,
+        'pelanggan': pelanggan.toJson(),
+        'idOdp': idOdp,
+        'namaTeknisi': namaTeknisi,
+      };
 }

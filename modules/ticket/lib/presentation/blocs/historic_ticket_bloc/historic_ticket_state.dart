@@ -9,13 +9,20 @@ sealed class HistoricTicketState extends Equatable {
 
 final class HistoricTicketLoading extends HistoricTicketState {}
 
+final class HistoricTicketEmpty extends HistoricTicketState {}
+
 final class HistoricTicketLoaded extends HistoricTicketState {
   final List<Ticket> result;
+  final int selesaiTodayCount;
+  final int selesaiAllCount;
 
-  const HistoricTicketLoaded({required this.result});
+  const HistoricTicketLoaded(
+      {required this.result,
+      required this.selesaiTodayCount,
+      required this.selesaiAllCount});
 
   @override
-  List<Object> get props => [result];
+  List<Object> get props => [result, selesaiTodayCount, selesaiAllCount];
 }
 
 final class HistoricTicketError extends HistoricTicketState {}

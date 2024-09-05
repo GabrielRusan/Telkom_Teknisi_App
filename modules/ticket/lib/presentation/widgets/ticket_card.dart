@@ -70,7 +70,7 @@ class TicketCard extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: Text(
-                                ticket.ticketId,
+                                ticket.nomorTiket,
                                 style: TextStyleWidget.titleT3(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -111,7 +111,7 @@ class TicketCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Text(
-                ticket.title,
+                ticket.keluhan,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyleWidget.headlineH5(fontWeight: FontWeight.w600),
@@ -166,7 +166,7 @@ class TicketCard extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 4),
                                   child: Text(
-                                    ticket.customerName,
+                                    ticket.pelanggan.nama,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyleWidget.titleT3(
                                       fontWeight: FontWeight.w600,
@@ -177,7 +177,7 @@ class TicketCard extends StatelessWidget {
                                   height: 8,
                                 ),
                                 Text(
-                                  ticket.address,
+                                  ticket.pelanggan.alamat,
                                   style: TextStyleWidget.bodyB3(
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -207,7 +207,7 @@ class TicketCard extends StatelessWidget {
                                         : Colors.black,
                             borderRadius: BorderRadius.circular(4)),
                     child: Text(
-                      ticket.ticketType,
+                      ticket.type,
                       style: TextStyleWidget.bodyB3(
                           fontWeight: FontWeight.bold,
                           // color: Colors.grey.shade500,

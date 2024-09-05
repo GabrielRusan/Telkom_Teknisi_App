@@ -15,16 +15,17 @@ class AllTaskCompletedWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.task_rounded,
-              color: Colors.green,
-              size: 75,
+            Image.asset(
+              'assets/images/no_tugas.png',
+              package: 'core',
+              width: 200,
+              height: 200,
             ),
             const SizedBox(
-              height: 8,
+              height: 16,
             ),
             Text(
-              'Yeayy, lagi ga ada tugas nihh',
+              'Yeayy, sekarang lagi ga ada tugas!',
               style: TextStyleWidget.bodyB2(
                   color: ColorThemeStyle.grey100, fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,

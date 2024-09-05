@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Telkom Teknisi App',
         theme: ThemeData(
+          appBarTheme: const AppBarTheme(surfaceTintColor: Colors.white),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
         ),

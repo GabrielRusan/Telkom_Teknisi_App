@@ -3,5 +3,5 @@ import 'package:ticket/data/models/ticket_model.dart';
 abstract class TicketRemoteDatasource {
   Future<List<TicketModel>> getActiveTicket();
   Future<List<TicketModel>> getHistoricTicket();
-  Future<bool> updateTicketStatus(TicketModel ticket);
+  Future<bool> updateTicketStatus(int idTiket, String status);
 }

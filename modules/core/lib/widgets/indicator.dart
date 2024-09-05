@@ -2,6 +2,8 @@ import 'package:core/styles/color_theme_style.dart';
 import 'package:core/styles/shadow_style.dart';
 import 'package:core/styles/text_style_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
 
 class Indicator extends StatelessWidget {
   const Indicator({super.key});
@@ -36,11 +38,24 @@ class Indicator extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "90 \nTiket",
-                    style: TextStyleWidget.headlineH2(
-                        color: ColorThemeStyle.white100,
-                        fontWeight: FontWeight.w600),
+                  BlocBuilder<HistoricTicketBloc, HistoricTicketState>(
+                    builder: (context, state) {
+                      if (state is HistoricTicketLoaded) {
+                        return Text(
+                          "${state.selesaiAllCount} \nTiket",
+                          style: TextStyleWidget.headlineH2(
+                              color: ColorThemeStyle.white100,
+                              fontWeight: FontWeight.w600),
+                        );
+                      } else {
+                        return Text(
+                          "0 \nTiket",
+                          style: TextStyleWidget.headlineH2(
+                              color: ColorThemeStyle.white100,
+                              fontWeight: FontWeight.w600),
+                        );
+                      }
+                    },
                   ),
                   GestureDetector(
                     onTap: () {},

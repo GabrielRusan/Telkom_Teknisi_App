@@ -14,36 +14,38 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
 
   @override
   Future<List<TicketModel>> getActiveTicket() async {
-    final String? userId = sharedPref.getString("userId");
+    final String? userId = sharedPref.getString("idteknisi");
     final String? token = sharedPref.getString("token");
 
     if (token == null || userId == null) {
       throw NoCredentialException();
     }
     try {
-      final response = await dio.get("$BASE_URL/ticket/active/$userId",
+      final response = await dio.get(
+          "$BASE_URL/tiket/?idteknisi=$userId&status=Ditugaskan&status=In Progress",
           options: Options(headers: {'Authorization': 'Bearer $token'}));
 
-      if (response.statusCode == 200) {
-        return TicketModelResponse.fromJson(response.data).ticketList;
-      } else if (response.statusCode == 401) {
-        throw InvalidTokenException();
-      } else {
-        throw ServerException();
-      }
+      return TicketResponseModel.fromJson(response.data).ticketList;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {
         throw ConnectionException();
-      } else {
-        throw ServerException();
+      } else if (e.type == DioExceptionType.badResponse) {
+        switch (e.response?.statusCode) {
+          case 401:
+            throw InvalidTokenException();
+          case 404:
+            throw NotFoundException();
+          default:
+        }
       }
+      throw ServerException();
     }
   }
 
   @override
   Future<List<TicketModel>> getHistoricTicket() async {
-    final String? userId = sharedPref.getString("userId");
+    final String? userId = sharedPref.getString("idteknisi");
     final String? token = sharedPref.getString("token");
 
     if (token == null || userId == null) {
@@ -51,29 +53,31 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
     }
 
     try {
-      final response = await dio.get("$BASE_URL/ticket/historic/$userId",
+      final response = await dio.get(
+          "$BASE_URL/tiket/?idteknisi=$userId&status=Selesai",
           options: Options(headers: {'Authorization': 'Bearer $token'}));
 
-      if (response.statusCode == 200) {
-        return TicketModelResponse.fromJson(response.data).ticketList;
-      } else if (response.statusCode == 401) {
-        throw InvalidTokenException();
-      } else {
-        throw ServerException();
-      }
+      return TicketResponseModel.fromJson(response.data).ticketList;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {
         throw ConnectionException();
-      } else {
-        throw ServerException();
+      } else if (e.type == DioExceptionType.badResponse) {
+        switch (e.response?.statusCode) {
+          case 401:
+            throw InvalidTokenException();
+          case 404:
+            throw NotFoundException();
+          default:
+        }
       }
+      throw ServerException();
     }
   }
 
   @override
-  Future<bool> updateTicketStatus(TicketModel ticket) async {
-    final String? userId = sharedPref.getString("userId");
+  Future<bool> updateTicketStatus(int idTiket, String status) async {
+    final String? userId = sharedPref.getString("idteknisi");
     final String? token = sharedPref.getString("token");
 
     if (token == null || userId == null) {
@@ -81,28 +85,28 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
     }
 
     try {
-      final response =
-          await dio.put("$BASE_URL/ticket/update/${ticket.ticketId}",
-              data: ticket.toJson(),
-              options: Options(headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer $token',
-              }));
+      await dio.put("$BASE_URL/tiket/$idTiket",
+          data: {"status": status},
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
 
-      if (response.statusCode == 200) {
-        return true;
-      } else if (response.statusCode == 401) {
-        throw InvalidTokenException();
-      } else {
-        throw ServerException();
-      }
+      return true;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {
         throw ConnectionException();
-      } else {
-        throw ServerException();
+      } else if (e.type == DioExceptionType.badResponse) {
+        switch (e.response?.statusCode) {
+          case 401:
+            throw InvalidTokenException();
+          case 404:
+            throw NotFoundException();
+          default:
+        }
       }
+      throw ServerException();
     }
   }
 }

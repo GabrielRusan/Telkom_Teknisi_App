@@ -57,8 +57,10 @@ void main() {
       (WidgetTester tester) async {
     when(() => mockHomepageBloc.state)
         .thenReturn(const HomepageState(index: 1));
-    when(() => mockBloc.state)
-        .thenReturn(HistoricTicketLoaded(result: [tTicket, tTicket, tTicket]));
+    when(() => mockBloc.state).thenReturn(HistoricTicketLoaded(
+        result: [tTicket, tTicket, tTicket],
+        selesaiAllCount: 3,
+        selesaiTodayCount: 0));
 
     final listViewFinder = find.byType(ListView);
     final tickteCardFinder = find.byType(TicketCard);

@@ -30,7 +30,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           e.type == DioExceptionType.connectionError) {
         throw ConnectionException();
       } else if (e.type == DioExceptionType.badResponse) {
-        if (e.response?.statusCode == 401) {
+        if (e.response?.statusCode == 400) {
+          throw WrongCombinationException('Field tidak boleh kosong!');
+        } else if (e.response?.statusCode == 401) {
           throw WrongCombinationException(e.response?.data['message']);
         }
       }

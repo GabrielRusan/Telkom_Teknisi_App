@@ -5,5 +5,5 @@ import 'package:ticket/domain/entities/ticket.dart';
 abstract class TicketRepository {
   Future<Either<Failure, List<Ticket>>> getActiveTicket();
   Future<Either<Failure, List<Ticket>>> getHistoricTicket();
-  Future<Either<Failure, bool>> updateTicketStatus(Ticket ticket);
+  Future<Either<Failure, bool>> updateTicketStatus(int idTiket, String status);
 }

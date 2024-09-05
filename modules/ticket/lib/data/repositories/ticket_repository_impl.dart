@@ -2,7 +2,6 @@ import 'package:core/utils/exception.dart';
 import 'package:core/utils/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:ticket/data/datasources/ticket_remote_datasource/ticket_remote_datasource.dart';
-import 'package:ticket/data/models/ticket_model.dart';
 import 'package:ticket/domain/entities/ticket.dart';
 import 'package:ticket/domain/repositories/ticket_repository.dart';
 
@@ -21,6 +20,8 @@ class TicketRepositoryImpl implements TicketRepository {
       return const Left(NoCredentialFailure(''));
     } on InvalidTokenException {
       return const Left(TokenFailure(''));
+    } on NotFoundException {
+      return const Left(NotFoundFailure(''));
     } on ServerException {
       return const Left(ServerFailure(''));
     } on ConnectionException {
@@ -36,6 +37,8 @@ class TicketRepositoryImpl implements TicketRepository {
           result.map((ticketModel) => ticketModel.toEntity())));
     } on NoCredentialException {
       return const Left(NoCredentialFailure(''));
+    } on NotFoundException {
+      return const Left(NotFoundFailure(''));
     } on InvalidTokenException {
       return const Left(TokenFailure(''));
     } on ServerException {
@@ -46,10 +49,11 @@ class TicketRepositoryImpl implements TicketRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateTicketStatus(Ticket ticket) async {
+  Future<Either<Failure, bool>> updateTicketStatus(
+      int idTiket, String status) async {
     try {
-      final result = await ticketRemoteDatasource
-          .updateTicketStatus(TicketModel.fromEntity(ticket));
+      final result =
+          await ticketRemoteDatasource.updateTicketStatus(idTiket, status);
       return Right(result);
     } on NoCredentialException {
       return const Left(NoCredentialFailure(''));

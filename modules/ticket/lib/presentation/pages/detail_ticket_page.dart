@@ -5,6 +5,7 @@ import 'package:core/styles/text_style_widget.dart';
 import 'package:core/utils/routes.dart';
 import 'package:core/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket/domain/entities/ticket.dart';
 import 'package:ticket/presentation/blocs/active_ticket_bloc/active_ticket_bloc.dart';
@@ -46,6 +47,7 @@ class DetailTicketPage extends StatelessWidget {
             btnOkOnPress: () {
               context.read<HomepageBloc>().add(const OnChanedIndex(index: 1));
               context.read<HistoricTicketBloc>().add(FetchHistoricTicket());
+              context.read<ActiveTicketBloc>().add(FetchActiveTicket());
               Navigator.pushNamedAndRemoveUntil(
                   context, MyRoutes.homePage, (Route<dynamic> route) => false);
             },
@@ -62,11 +64,27 @@ class DetailTicketPage extends StatelessWidget {
             title: 'Success!',
             btnOkOnPress: () {
               context.read<HomepageBloc>().add(const OnChanedIndex(index: 0));
+              context.read<HistoricTicketBloc>().add(FetchHistoricTicket());
               context.read<ActiveTicketBloc>().add(FetchActiveTicket());
               Navigator.pushNamedAndRemoveUntil(
                   context, MyRoutes.homePage, (Route<dynamic> route) => false);
             },
           ).show();
+        } else {
+          Navigator.pop(context);
+          AwesomeDialog(
+                  context: context,
+                  headerAnimationLoop: false,
+                  dialogType: DialogType.error,
+                  animType: AnimType.scale,
+                  titleTextStyle:
+                      TextStyleWidget.headlineH3(fontWeight: FontWeight.w500),
+                  title: 'Gagal!',
+                  descTextStyle: TextStyleWidget.bodyB2(),
+                  desc: 'Terjadi kesalahan, coba lagi nanti',
+                  btnOkOnPress: () {},
+                  btnCancelOnPress: () {})
+              .show();
         }
       },
       child: Scaffold(
@@ -74,8 +92,7 @@ class DetailTicketPage extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              // context.read<HistoricTicketBloc>().add(FetchHistoricTicket());
-              Navigator.pushNamed(context, MyRoutes.homePage);
+              Navigator.pushReplacementNamed(context, MyRoutes.homePage);
             },
           ),
           backgroundColor: Colors.white,
@@ -90,7 +107,7 @@ class DetailTicketPage extends StatelessWidget {
                       TextStyleWidget.headlineH4(fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  ticket.ticketId,
+                  ticket.nomorTiket,
                   style: TextStyleWidget.bodyB2(
                       color: ColorThemeStyle.grey80,
                       fontWeight: FontWeight.w600),
@@ -150,7 +167,7 @@ class DetailTicketPage extends StatelessWidget {
                       height: 16,
                     ),
                     Text(
-                      ticket.title,
+                      ticket.keluhan,
                       style:
                           TextStyleWidget.titleT3(fontWeight: FontWeight.w500),
                     ),
@@ -184,13 +201,109 @@ class DetailTicketPage extends StatelessWidget {
                                           : Colors.black,
                               borderRadius: BorderRadius.circular(4)),
                       child: Text(
-                        ticket.ticketType,
+                        ticket.type,
                         style: TextStyleWidget.bodyB3(
                             fontWeight: FontWeight.bold,
                             // color: Colors.grey.shade500,
                             color: Colors.white),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(color: Colors.white),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Informasi Teknis',
+                      style:
+                          TextStyleWidget.titleT2(fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nomor Tiket',
+                          style: TextStyleWidget.titleT3(
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          ticket.nomorTiket,
+                          style: TextStyleWidget.bodyB3(
+                              fontWeight: FontWeight.w500,
+                              color: ColorThemeStyle.grey100),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nomor Internet',
+                          style: TextStyleWidget.titleT3(
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          ticket.nomorInternet,
+                          style: TextStyleWidget.bodyB3(
+                              fontWeight: FontWeight.w500,
+                              color: ColorThemeStyle.grey100),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'ODP',
+                          style: TextStyleWidget.titleT3(
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          ticket.idOdp,
+                          style: TextStyleWidget.bodyB3(
+                              fontWeight: FontWeight.w500,
+                              color: ColorThemeStyle.grey100),
+                        ),
+                      ],
+                    ),
+                    ticket.status == 'Selesai'
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Tanggal Selesai',
+                                  style: TextStyleWidget.titleT3(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  dateToStringLengkap(ticket.updatedAt),
+                                  style: TextStyleWidget.bodyB3(
+                                      fontWeight: FontWeight.w500,
+                                      color: ColorThemeStyle.grey100),
+                                ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox()
                   ],
                 ),
               ),
@@ -274,7 +387,7 @@ class DetailTicketPage extends StatelessWidget {
                                           fontWeight: FontWeight.w500),
                                     ),
                                     Text(
-                                      ticket.customerName,
+                                      ticket.pelanggan.nama,
                                       style: TextStyleWidget.bodyB3(
                                           fontWeight: FontWeight.w500,
                                           color: ColorThemeStyle.grey100),
@@ -286,6 +399,8 @@ class DetailTicketPage extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () {
+                                    Clipboard.setData(ClipboardData(
+                                        text: ticket.pelanggan.nohp));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                             duration: Duration(seconds: 1),
@@ -304,7 +419,7 @@ class DetailTicketPage extends StatelessWidget {
                                       Row(
                                         children: [
                                           Text(
-                                            ticket.customerNoHp,
+                                            ticket.pelanggan.nohp,
                                             style: TextStyleWidget.bodyB3(
                                                 fontWeight: FontWeight.w500,
                                                 color: ColorThemeStyle.grey100),
@@ -340,7 +455,7 @@ class DetailTicketPage extends StatelessWidget {
                                     FittedBox(
                                       fit: BoxFit.scaleDown,
                                       child: Text(
-                                        ticket.address,
+                                        ticket.pelanggan.alamat,
                                         maxLines: 1,
                                         style: TextStyleWidget.bodyB3(
                                             fontWeight: FontWeight.w500,
@@ -376,9 +491,9 @@ class DetailTicketPage extends StatelessWidget {
                     const SizedBox(
                       height: 16,
                     ),
-                    ticket.note.isNotEmpty
+                    ticket.notePelanggan.isNotEmpty
                         ? Text(
-                            ticket.note,
+                            ticket.notePelanggan,
                             style: TextStyleWidget.titleT3(
                                 fontWeight: FontWeight.w500),
                           )
@@ -416,22 +531,11 @@ class DetailTicketPage extends StatelessWidget {
                                           desc:
                                               'Status ticket akan berubah ke In Progress dan tidak bisa kembali ke status sekarang',
                                           btnOkOnPress: () {
-                                            final Ticket newTicket = Ticket(
-                                                ticketId: ticket.ticketId,
-                                                title: ticket.title,
-                                                customerName:
-                                                    ticket.customerName,
-                                                ticketType: ticket.ticketType,
-                                                note: ticket.note,
-                                                createdAt: ticket.createdAt,
-                                                address: ticket.address,
-                                                status: 'In Progress',
-                                                customerNoHp:
-                                                    ticket.customerNoHp);
                                             context
                                                 .read<UpdateTicketBloc>()
                                                 .add(UpdateTicketEvent(
-                                                    newTicket));
+                                                    ticket.idTiket,
+                                                    'In Progress'));
                                           },
                                           btnCancelOnPress: () {})
                                       .show();
@@ -459,23 +563,11 @@ class DetailTicketPage extends StatelessWidget {
                                                   TextStyleWidget.bodyB2(),
                                               desc: 'Apakah anda yakin?',
                                               btnOkOnPress: () {
-                                                final Ticket newTicket = Ticket(
-                                                    ticketId: ticket.ticketId,
-                                                    title: ticket.title,
-                                                    customerName:
-                                                        ticket.customerName,
-                                                    ticketType:
-                                                        ticket.ticketType,
-                                                    note: ticket.note,
-                                                    createdAt: ticket.createdAt,
-                                                    address: ticket.address,
-                                                    status: 'Selesai',
-                                                    customerNoHp:
-                                                        ticket.customerNoHp);
                                                 context
                                                     .read<UpdateTicketBloc>()
                                                     .add(UpdateTicketEvent(
-                                                        newTicket));
+                                                        ticket.idTiket,
+                                                        'Selesai'));
                                               },
                                               btnCancelOnPress: () {})
                                           .show();

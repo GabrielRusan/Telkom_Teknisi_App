@@ -1014,11 +1014,17 @@ class MockTicketRemoteDatasource extends _i1.Mock
       ) as _i9.Future<List<_i13.TicketModel>>);
 
   @override
-  _i9.Future<bool> updateTicketStatus(_i13.TicketModel? ticket) =>
+  _i9.Future<bool> updateTicketStatus(
+    int? idTiket,
+    String? status,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateTicketStatus,
-          [ticket],
+          [
+            idTiket,
+            status,
+          ],
         ),
         returnValue: _i9.Future<bool>.value(false),
       ) as _i9.Future<bool>);
@@ -1070,18 +1076,26 @@ class MockTicketRepository extends _i1.Mock implements _i14.TicketRepository {
 
   @override
   _i9.Future<_i7.Either<_i15.Failure, bool>> updateTicketStatus(
-          _i16.Ticket? ticket) =>
+    int? idTiket,
+    String? status,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateTicketStatus,
-          [ticket],
+          [
+            idTiket,
+            status,
+          ],
         ),
         returnValue: _i9.Future<_i7.Either<_i15.Failure, bool>>.value(
             _FakeEither_5<_i15.Failure, bool>(
           this,
           Invocation.method(
             #updateTicketStatus,
-            [ticket],
+            [
+              idTiket,
+              status,
+            ],
           ),
         )),
       ) as _i9.Future<_i7.Either<_i15.Failure, bool>>);

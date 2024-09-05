@@ -34,7 +34,7 @@ Future<void> init() async {
   await locator.isReady<SharedPreferences>();
   locator.registerLazySingleton<Dio>(() => Dio(BaseOptions(
       connectTimeout: const Duration(seconds: 3),
-      receiveTimeout: const Duration(seconds: 3))));
+      receiveTimeout: const Duration(seconds: 5))));
   locator.registerLazySingleton(() => DataConnectionChecker());
 
   //datasources

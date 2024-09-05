@@ -1,38 +1,51 @@
 import 'package:equatable/equatable.dart';
+import 'package:ticket/domain/entities/pelanggan.dart';
 
 class Ticket extends Equatable {
-  final String ticketId;
-  final String title;
-  final String customerName;
-  final String customerNoHp;
-  final String ticketType;
-  final String note;
-  final DateTime createdAt;
-  final String address;
+  final int idTiket;
+  final String nomorTiket;
+  final String nomorInternet;
+  final String keluhan;
+  final String type;
   final String status;
+  final String ket;
+  final String notePelanggan;
+  final Pelanggan pelanggan;
+  final String idOdp;
+  final String namaTeknisi;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const Ticket({
-    required this.ticketId,
-    required this.title,
-    required this.customerName,
-    required this.ticketType,
-    required this.note,
-    required this.createdAt,
-    required this.address,
+    required this.idTiket,
+    required this.nomorTiket,
+    required this.nomorInternet,
+    required this.keluhan,
+    required this.type,
     required this.status,
-    required this.customerNoHp,
+    required this.ket,
+    required this.notePelanggan,
+    required this.pelanggan,
+    required this.idOdp,
+    required this.namaTeknisi,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   @override
   List<Object?> get props => [
-        ticketId,
-        title,
-        customerName,
-        note,
+        idTiket,
+        nomorTiket,
+        nomorInternet,
+        keluhan,
+        notePelanggan,
+        pelanggan,
+        idOdp,
+        namaTeknisi,
         createdAt,
-        address,
+        updatedAt,
+        ket,
         status,
-        customerNoHp,
-        ticketType
+        type
       ];
 }

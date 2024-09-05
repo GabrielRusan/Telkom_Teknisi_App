@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:core/utils/exception.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:ticket/data/datasources/ticket_remote_datasource/ticket_remote_datasource_impl.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
+import '../../../json_reader.dart';
 import '../../../test_helper/test_helper.mocks.dart';
 
 void main() {
@@ -33,24 +36,9 @@ void main() {
       when(mockSharedPref.getString('token')).thenReturn(tToken);
       when(mockDio.get(any, options: anyNamed('options'))).thenAnswer(
         (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-          data: {
-            'result': [
-              {
-                "ticketId": "1",
-                "title": "title",
-                "customerName": "name",
-                "customerNoHp": "123",
-                "note": "note",
-                "createdAt": "2024-01-01T12:00:00.000",
-                "address": "address",
-                "status": "Assigned",
-                "ticketType": "Gold"
-              }
-            ]
-          },
-        ),
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 200,
+            data: [jsonDecode(readJson('dummy_data/ticket.json'))]),
       );
       //act
       final result = await ticketRemoteDatasourceImpl.getActiveTicket();
@@ -246,7 +234,7 @@ void main() {
       );
       //act
       final result =
-          await ticketRemoteDatasourceImpl.updateTicketStatus(tTicketModel);
+          await ticketRemoteDatasourceImpl.updateTicketStatus(1, 'Selesai');
       //assert
       expect(result, true);
     });
@@ -268,7 +256,7 @@ void main() {
         ),
       );
       //act
-      final call = ticketRemoteDatasourceImpl.updateTicketStatus(tTicketModel);
+      final call = ticketRemoteDatasourceImpl.updateTicketStatus(1, 'Selesai');
       //assert
       expect(() => call, throwsA(isA<InvalidTokenException>()));
     });
@@ -290,7 +278,7 @@ void main() {
         ),
       );
       //act
-      final call = ticketRemoteDatasourceImpl.updateTicketStatus(tTicketModel);
+      final call = ticketRemoteDatasourceImpl.updateTicketStatus(1, 'Selesai');
       //assert
       expect(() => call, throwsA(isA<ServerException>()));
     });
@@ -309,7 +297,7 @@ void main() {
           // timeout: const Duration(seconds: 5000),
           requestOptions: RequestOptions(path: '')));
       //act
-      final call = ticketRemoteDatasourceImpl.updateTicketStatus(tTicketModel);
+      final call = ticketRemoteDatasourceImpl.updateTicketStatus(1, 'Selesai');
       //assert
       expect(() => call, throwsA(isA<ConnectionException>()));
     });
@@ -321,7 +309,7 @@ void main() {
       when(mockSharedPref.getString('userId')).thenReturn(null);
       when(mockSharedPref.getString('token')).thenReturn(tToken);
       //act
-      final call = ticketRemoteDatasourceImpl.updateTicketStatus(tTicketModel);
+      final call = ticketRemoteDatasourceImpl.updateTicketStatus(1, 'Selesai');
       //assert
       expect(() => call, throwsA(isA<NoCredentialException>()));
     });

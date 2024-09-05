@@ -31,8 +31,11 @@ void main() {
       return bloc;
     },
     act: (bloc) => bloc.add(FetchHistoricTicket()),
-    expect: () =>
-        [HistoricTicketLoading(), HistoricTicketLoaded(result: tTicketList)],
+    expect: () => [
+      HistoricTicketLoading(),
+      HistoricTicketLoaded(
+          result: tTicketList, selesaiAllCount: 1, selesaiTodayCount: 0)
+    ],
   );
 
   blocTest<HistoricTicketBloc, HistoricTicketState>(

@@ -1,3 +1,4 @@
+import 'package:core/utils/failure.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ticket/domain/entities/ticket.dart';
@@ -8,15 +9,27 @@ part 'active_ticket_state.dart';
 
 class ActiveTicketBloc extends Bloc<ActiveTicketEvent, ActiveTicketState> {
   final GetActiveTicket getActiveTicket;
-  ActiveTicketBloc(this.getActiveTicket) : super(ActiveTicketLoading()) {
-    on<ActiveTicketEvent>((event, emit) async {
+  ActiveTicketBloc(this.getActiveTicket) : super(ActiveTicketLoading())
+  // : super(ActiveTicketLoaded(
+  //       result: [dummyTicket2, dummyTicket1], ticketCount: 2))
+  {
+    on<FetchActiveTicket>((event, emit) async {
       emit(ActiveTicketLoading());
+      await Future.delayed(const Duration(milliseconds: 500));
       final result = await getActiveTicket.execute();
 
       result.fold((failure) {
-        emit(ActiveTicketError());
+        if (failure is NotFoundFailure) {
+          emit(ActiveTicketEmpty());
+        } else {
+          emit(ActiveTicketError());
+        }
       }, (data) {
-        emit(ActiveTicketLoaded(result: data));
+        if (data.isEmpty) {
+          emit(ActiveTicketEmpty());
+          return;
+        }
+        emit(ActiveTicketLoaded(result: data, ticketCount: data.length));
       });
     });
   }

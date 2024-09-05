@@ -31,8 +31,10 @@ void main() {
       return bloc;
     },
     act: (bloc) => bloc.add(FetchActiveTicket()),
-    expect: () =>
-        [ActiveTicketLoading(), ActiveTicketLoaded(result: tTicketList)],
+    expect: () => [
+      ActiveTicketLoading(),
+      ActiveTicketLoaded(result: tTicketList, ticketCount: 1)
+    ],
   );
 
   blocTest<ActiveTicketBloc, ActiveTicketState>(

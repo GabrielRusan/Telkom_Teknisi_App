@@ -50,11 +50,6 @@ class _HistoricTicketPageState extends State<HistoricTicketPage> {
               ),
             );
           } else if (state is HistoricTicketLoaded) {
-            if (state.result.isEmpty) {
-              return const EmptyDisplayWidget(
-                  message:
-                      'Uppss maaf, anda belum memiliki riwayat pengerjaan!');
-            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
@@ -71,27 +66,38 @@ class _HistoricTicketPageState extends State<HistoricTicketPage> {
                     height: 16,
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        final ticket = state.result[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 16, left: 8, right: 8),
-                          child: TicketCard(
-                              ticket: ticket,
-                              onTapCard: () {
-                                Navigator.of(context).pushNamed(
-                                    MyRoutes.detailTicketPage,
-                                    arguments: ticket);
-                              }),
-                        );
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        context
+                            .read<HistoricTicketBloc>()
+                            .add(FetchHistoricTicket());
                       },
-                      itemCount: state.result.length,
+                      color: ColorThemeStyle.redPrimary,
+                      child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          final ticket = state.result[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 16, left: 8, right: 8),
+                            child: TicketCard(
+                                ticket: ticket,
+                                onTapCard: () {
+                                  Navigator.of(context).pushNamed(
+                                      MyRoutes.detailTicketPage,
+                                      arguments: ticket);
+                                }),
+                          );
+                        },
+                        itemCount: state.result.length,
+                      ),
                     ),
                   ),
                 ],
               ),
             );
+          } else if (state is HistoricTicketEmpty) {
+            return const EmptyDisplayWidget(
+                message: 'Uppss maaf, anda belum memiliki riwayat pengerjaan!');
           }
           return TryAgainWidget(
             onPressed: () {

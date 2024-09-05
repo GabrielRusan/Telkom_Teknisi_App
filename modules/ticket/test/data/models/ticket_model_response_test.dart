@@ -10,13 +10,12 @@ void main() {
   group('fromJson', () {
     test('Should return a valid model from JSON', () {
       // arrange
-      final Map<String, dynamic> jsonMap =
-          json.decode(readJson('dummy_data/ticket_list.json'));
+      final jsonMap = json.decode(readJson('dummy_data/ticket_response.json'));
       // act
-      final result = TicketModelResponse.fromJson(jsonMap);
+      final result = TicketResponseModel.fromJson(jsonMap);
       // assert
-      expect(result, tTicketModelResponse);
-      expect(result.ticketList, tTicketModelResponse.ticketList);
+      expect(result, tTicketResponseModel);
+      expect(result.ticketList, tTicketResponseModel.ticketList);
     });
   });
 }
