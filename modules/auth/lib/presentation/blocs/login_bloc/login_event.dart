@@ -26,3 +26,5 @@ class PasswordChanged extends LoginEvent {
   @override
   List<Object> get props => [value];
 }
+
+class ClearValue extends LoginEvent {}

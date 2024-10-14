@@ -23,6 +23,7 @@ class ActiveTicketPage extends StatelessWidget {
             );
           } else if (state is ActiveTicketLoaded) {
             return ListView.builder(
+              padding: const EdgeInsets.only(top: 16),
               itemBuilder: (context, index) {
                 final ticket = state.result[index];
                 return Padding(

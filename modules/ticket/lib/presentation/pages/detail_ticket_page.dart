@@ -174,13 +174,15 @@ class DetailTicketPage extends StatelessWidget {
                     const SizedBox(
                       height: 2,
                     ),
-                    Text(
-                      remainingTime(ticket.createdAt),
-                      textAlign: TextAlign.justify,
-                      style: TextStyleWidget.bodyB3(
-                          fontWeight: FontWeight.w500,
-                          color: ColorThemeStyle.redPrimary),
-                    ),
+                    ticket.status == 'In Progress'
+                        ? Text(
+                            remainingTime(ticket.createdAt),
+                            textAlign: TextAlign.justify,
+                            style: TextStyleWidget.bodyB3(
+                                fontWeight: FontWeight.w500,
+                                color: ColorThemeStyle.redPrimary),
+                          )
+                        : const SizedBox(),
                     const SizedBox(
                       height: 16,
                     ),
@@ -290,7 +292,7 @@ class DetailTicketPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Tanggal Selesai',
+                                  'Waktu Selesai',
                                   style: TextStyleWidget.titleT3(
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -476,106 +478,92 @@ class DetailTicketPage extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(color: Colors.white),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Catatan Pelanggan',
-                      style:
-                          TextStyleWidget.titleT2(fontWeight: FontWeight.w700),
+              ticket.status == 'Selesai'
+                  ? const SizedBox()
+                  : Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: const BoxDecoration(color: Colors.white),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ticket.status == 'Selesai'
+                              ? const SizedBox()
+                              : ticket.status == 'Ditugaskan'
+                                  ? ButtonWidget.defaultContainer(
+                                      child: Text(
+                                        'Kerjakan Sekarang',
+                                        style: TextStyleWidget.labelL1(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      onPressed: () {
+                                        AwesomeDialog(
+                                                context: context,
+                                                dialogType: DialogType.warning,
+                                                headerAnimationLoop: false,
+                                                animType: AnimType.scale,
+                                                dismissOnTouchOutside: false,
+                                                titleTextStyle:
+                                                    TextStyleWidget.headlineH3(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                title: 'Peringatan!',
+                                                descTextStyle:
+                                                    TextStyleWidget.bodyB2(),
+                                                desc:
+                                                    'Status ticket akan berubah ke In Progress dan tidak bisa kembali ke status sekarang',
+                                                btnOkOnPress: () {
+                                                  context
+                                                      .read<UpdateTicketBloc>()
+                                                      .add(UpdateTicketEvent(
+                                                          ticket.nomorTiket,
+                                                          'In Progress'));
+                                                },
+                                                btnCancelOnPress: () {})
+                                            .show();
+                                      })
+                                  : ticket.status == 'In Progress'
+                                      ? ButtonWidget.defaultContainer(
+                                          child: Text(
+                                            'Selesai',
+                                            style: TextStyleWidget.bodyB1(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          onPressed: () {
+                                            AwesomeDialog(
+                                                    context: context,
+                                                    headerAnimationLoop: false,
+                                                    dialogType:
+                                                        DialogType.warning,
+                                                    animType: AnimType.scale,
+                                                    titleTextStyle:
+                                                        TextStyleWidget
+                                                            .headlineH3(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                    title: 'Peringatan!',
+                                                    descTextStyle:
+                                                        TextStyleWidget
+                                                            .bodyB2(),
+                                                    desc: 'Apakah anda yakin?',
+                                                    btnOkOnPress: () {
+                                                      context
+                                                          .read<
+                                                              UpdateTicketBloc>()
+                                                          .add(UpdateTicketEvent(
+                                                              ticket.nomorTiket,
+                                                              'Selesai'));
+                                                    },
+                                                    btnCancelOnPress: () {})
+                                                .show();
+                                          })
+                                      : const SizedBox()
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    ticket.notePelanggan.isNotEmpty
-                        ? Text(
-                            ticket.notePelanggan,
-                            style: TextStyleWidget.titleT3(
-                                fontWeight: FontWeight.w500),
-                          )
-                        : Text(
-                            '-',
-                            style: TextStyleWidget.titleT3(
-                                fontWeight: FontWeight.w500),
-                          ),
-                    SizedBox(
-                      height: ticket.status == 'Selesai' ? 8 : 32,
-                    ),
-                    ticket.status == 'Selesai'
-                        ? const SizedBox()
-                        : ticket.status == 'Ditugaskan'
-                            ? ButtonWidget.defaultContainer(
-                                child: Text(
-                                  'Kerjakan Sekarang',
-                                  style: TextStyleWidget.labelL1(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                onPressed: () {
-                                  AwesomeDialog(
-                                          context: context,
-                                          dialogType: DialogType.warning,
-                                          headerAnimationLoop: false,
-                                          animType: AnimType.scale,
-                                          dismissOnTouchOutside: false,
-                                          titleTextStyle:
-                                              TextStyleWidget.headlineH3(
-                                                  fontWeight: FontWeight.w500),
-                                          title: 'Peringatan!',
-                                          descTextStyle:
-                                              TextStyleWidget.bodyB2(),
-                                          desc:
-                                              'Status ticket akan berubah ke In Progress dan tidak bisa kembali ke status sekarang',
-                                          btnOkOnPress: () {
-                                            context
-                                                .read<UpdateTicketBloc>()
-                                                .add(UpdateTicketEvent(
-                                                    ticket.idTiket,
-                                                    'In Progress'));
-                                          },
-                                          btnCancelOnPress: () {})
-                                      .show();
-                                })
-                            : ticket.status == 'In Progress'
-                                ? ButtonWidget.defaultContainer(
-                                    child: Text(
-                                      'Selesai',
-                                      style: TextStyleWidget.bodyB1(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    onPressed: () {
-                                      AwesomeDialog(
-                                              context: context,
-                                              headerAnimationLoop: false,
-                                              dialogType: DialogType.warning,
-                                              animType: AnimType.scale,
-                                              titleTextStyle:
-                                                  TextStyleWidget.headlineH3(
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                              title: 'Peringatan!',
-                                              descTextStyle:
-                                                  TextStyleWidget.bodyB2(),
-                                              desc: 'Apakah anda yakin?',
-                                              btnOkOnPress: () {
-                                                context
-                                                    .read<UpdateTicketBloc>()
-                                                    .add(UpdateTicketEvent(
-                                                        ticket.idTiket,
-                                                        'Selesai'));
-                                              },
-                                              btnCancelOnPress: () {})
-                                          .show();
-                                    })
-                                : const SizedBox()
-                  ],
-                ),
-              ),
             ],
           ),
         ),

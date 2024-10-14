@@ -76,7 +76,7 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
   }
 
   @override
-  Future<bool> updateTicketStatus(int idTiket, String status) async {
+  Future<bool> updateTicketStatus(String nomorTiket, String status) async {
     final String? userId = sharedPref.getString("idteknisi");
     final String? token = sharedPref.getString("token");
 
@@ -85,7 +85,7 @@ class TicketRemoteDatasourceImpl implements TicketRemoteDatasource {
     }
 
     try {
-      await dio.put("$BASE_URL/tiket/$idTiket",
+      await dio.put("$BASE_URL/tiket/$nomorTiket",
           data: {"status": status},
           options: Options(headers: {
             'Content-Type': 'application/json',

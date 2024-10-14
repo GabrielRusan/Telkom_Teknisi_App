@@ -3,6 +3,7 @@ import 'package:core/styles/text_style_widget.dart';
 import 'package:core/widgets/dashboard_card_small.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 import 'package:ticket/presentation/blocs/active_ticket_bloc/active_ticket_bloc.dart';
 import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
 
@@ -18,29 +19,59 @@ class DashboardCardWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DashboardCardSmall(
-                title: 'Status Saya',
-                subtitle: Row(
-                  children: [
-                    const SizedBox(
-                      width: 2,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 10,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.green),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      'Aktif',
-                      style: TextStyleWidget.titleT2(
-                          fontWeight: FontWeight.w600, color: Colors.green),
-                    ),
-                  ],
-                )),
+            BlocBuilder<ProfileBloc, ProfileState>(
+              builder: (context, state) {
+                if (state is ProfileSuccess) {
+                  return DashboardCardSmall(
+                      title: 'Status Saya',
+                      subtitle: Row(
+                        children: [
+                          const SizedBox(
+                            width: 2,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 10,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: state.user.ket == 'Available'
+                                    ? Colors.green
+                                    : ColorThemeStyle.redSecond),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          state.user.ket == 'Available'
+                              ? Text(
+                                  'Aktif',
+                                  style: TextStyleWidget.titleT2(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.green),
+                                )
+                              : Text(
+                                  'Sibuk',
+                                  style: TextStyleWidget.titleT2(
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorThemeStyle.redSecond),
+                                )
+                        ],
+                      ));
+                }
+                return DashboardCardSmall(
+                    title: 'Status Saya',
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '...',
+                          style: TextStyleWidget.titleT2(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ));
+              },
+            ),
             DashboardCardSmall(
               title: 'Task hari ini',
               subtitle: BlocBuilder<ActiveTicketBloc, ActiveTicketState>(

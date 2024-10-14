@@ -1,10 +1,10 @@
 part of 'update_ticket_bloc.dart';
 
 final class UpdateTicketEvent extends Equatable {
-  final int idTiket;
+  final String nomorTiket;
   final String status;
-  const UpdateTicketEvent(this.idTiket, this.status);
+  const UpdateTicketEvent(this.nomorTiket, this.status);
 
   @override
-  List<Object> get props => [idTiket, status];
+  List<Object> get props => [nomorTiket, status];
 }

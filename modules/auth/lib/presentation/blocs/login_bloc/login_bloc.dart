@@ -14,6 +14,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         transformer: throttleDroppable(const Duration(seconds: 1)));
     on<UsernameChanged>(_onUsernameChanged);
     on<PasswordChanged>(_onPasswordChanged);
+    on<ClearValue>(
+      (event, emit) => emit(const LoginState()),
+    );
   }
 
   void _onUsernameChanged(UsernameChanged event, Emitter<LoginState> emit) {

@@ -50,10 +50,10 @@ class TicketRepositoryImpl implements TicketRepository {
 
   @override
   Future<Either<Failure, bool>> updateTicketStatus(
-      int idTiket, String status) async {
+      String nomorTiket, String status) async {
     try {
       final result =
-          await ticketRemoteDatasource.updateTicketStatus(idTiket, status);
+          await ticketRemoteDatasource.updateTicketStatus(nomorTiket, status);
       return Right(result);
     } on NoCredentialException {
       return const Left(NoCredentialFailure(''));

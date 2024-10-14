@@ -12,7 +12,7 @@ class UpdateTicketBloc extends Bloc<UpdateTicketEvent, UpdateTicketState> {
       emit(UpdateTicketLoading());
 
       final result =
-          await updateTicketStatus.execute(event.idTiket, event.status);
+          await updateTicketStatus.execute(event.nomorTiket, event.status);
 
       result.fold((failure) {
         print(failure);

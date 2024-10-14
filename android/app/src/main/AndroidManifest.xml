@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="telkom_teknisi_app"
+        android:label="Telkom Teknisi App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

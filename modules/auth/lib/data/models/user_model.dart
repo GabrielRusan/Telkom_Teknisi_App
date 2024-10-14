@@ -3,9 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
 class UserModel extends Equatable {
-  final int idteknisi;
+  final String idteknisi;
   final String nama;
-  final String sektor;
+  final String kehadiran;
+  final String ket;
   final String username;
   final String pass;
   final DateTime createdAt;
@@ -14,7 +15,8 @@ class UserModel extends Equatable {
   const UserModel({
     required this.idteknisi,
     required this.nama,
-    required this.sektor,
+    required this.kehadiran,
+    required this.ket,
     required this.username,
     required this.pass,
     required this.createdAt,
@@ -24,7 +26,8 @@ class UserModel extends Equatable {
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         idteknisi: json["idteknisi"],
         nama: json["nama"],
-        sektor: json["sektor"],
+        kehadiran: json["kehadiran"],
+        ket: json["ket"],
         username: json["username"],
         pass: json["pass"],
         createdAt: DateTime.parse(json["createdAt"]),
@@ -34,7 +37,7 @@ class UserModel extends Equatable {
   Map<String, dynamic> toJson() => {
         "idteknisi": idteknisi,
         "nama": nama,
-        "sektor": sektor,
+        "kehadiran": kehadiran,
         "username": username,
         "pass": pass,
         "createdAt": DateFormat('yyyy-MM-dd HH:mm:ss').format(createdAt),
@@ -44,7 +47,8 @@ class UserModel extends Equatable {
   User toEntity() => User(
       idteknisi: idteknisi,
       nama: nama,
-      sektor: sektor,
+      kehadiran: kehadiran,
+      ket: ket,
       username: username,
       pass: pass,
       createdAt: createdAt,
@@ -52,5 +56,5 @@ class UserModel extends Equatable {
 
   @override
   List<Object?> get props =>
-      [idteknisi, nama, sektor, username, pass, createdAt, updatedAt];
+      [idteknisi, nama, kehadiran, ket, username, pass, createdAt, updatedAt];
 }

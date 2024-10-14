@@ -154,12 +154,12 @@ void main() {
   group('update ticket status test', () {
     test('should get true when call to remote data is successful', () async {
       //arrange
-      when(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'))
+      when(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'))
           .thenAnswer((_) async => true);
       //act
-      final result = await repository.updateTicketStatus(1, 'Selesai');
+      final result = await repository.updateTicketStatus('1', 'Selesai');
       //assert
-      verify(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'));
+      verify(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'));
       expect(result, const Right(true));
     });
 
@@ -167,12 +167,12 @@ void main() {
         'should return NoCredentialFailure when remote data throws NoCredentialException',
         () async {
       //arrange
-      when(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'))
+      when(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'))
           .thenThrow(NoCredentialException());
       //act
-      final result = await repository.updateTicketStatus(1, 'Selesai');
+      final result = await repository.updateTicketStatus('1', 'Selesai');
       //assert
-      verify(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'));
+      verify(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'));
       expect(result, const Left(NoCredentialFailure('')));
     });
 
@@ -180,12 +180,12 @@ void main() {
         'should return TokenFailure when remote data throws InvalidTokenException',
         () async {
       //arrange
-      when(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'))
+      when(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'))
           .thenThrow(InvalidTokenException());
       //act
-      final result = await repository.updateTicketStatus(1, 'Selesai');
+      final result = await repository.updateTicketStatus('1', 'Selesai');
       //assert
-      verify(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'));
+      verify(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'));
       expect(result, const Left(TokenFailure('')));
     });
 
@@ -193,24 +193,24 @@ void main() {
         'should return ConnectionFailure when remote data throws ConnectionException',
         () async {
       //arrange
-      when(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'))
+      when(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'))
           .thenThrow(ConnectionException());
       //act
-      final result = await repository.updateTicketStatus(1, 'Selesai');
+      final result = await repository.updateTicketStatus('1', 'Selesai');
       //assert
-      verify(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'));
+      verify(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'));
       expect(result, const Left(ConnectionFailure('')));
     });
 
     test('should return ServerFailure when remote data throws ServerException',
         () async {
       //arrange
-      when(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'))
+      when(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'))
           .thenThrow(ServerException());
       //act
-      final result = await repository.updateTicketStatus(1, 'Selesai');
+      final result = await repository.updateTicketStatus('1', 'Selesai');
       //assert
-      verify(mockTicketRemoteDatasource.updateTicketStatus(1, 'Selesai'));
+      verify(mockTicketRemoteDatasource.updateTicketStatus('1', 'Selesai'));
       expect(result, const Left(ServerFailure('')));
     });
   });

@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
-import '../../../test_helper/usecase_test_helper.mocks.dart';
+import '../../../test_helper/test_helper.mocks.dart';
 
 void main() {
   late MockGetHistoricTicket mockGetHistoricTicket;

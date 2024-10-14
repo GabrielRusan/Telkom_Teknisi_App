@@ -63,7 +63,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   20,
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(

@@ -120,14 +120,16 @@ class TicketCard extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              child: Text(
-                remainingTime(ticket.createdAt),
-                style:
-                    TextStyleWidget.bodyB3(color: ColorThemeStyle.redPrimary),
-              ),
-            ),
+            ticket.status == 'In Progress'
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    child: Text(
+                      remainingTime(ticket.createdAt),
+                      style: TextStyleWidget.bodyB3(
+                          color: ColorThemeStyle.redPrimary),
+                    ),
+                  )
+                : const SizedBox(),
             const SizedBox(
               height: 12,
             ),

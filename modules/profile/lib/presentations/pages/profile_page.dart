@@ -1,3 +1,4 @@
+import 'package:auth/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:core/styles/color_theme_style.dart';
 import 'package:core/styles/text_style_widget.dart';
@@ -27,13 +28,15 @@ class ProfilePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 30),
+                        padding: const EdgeInsets.only(left: 16),
                         child: BlocBuilder<ProfileBloc, ProfileState>(
                           builder: (context, state) {
                             if (state is ProfileSuccess) {
-                              return Text(state.user.nama,
-                                  style: TextStyleWidget.titleT2(
-                                      fontWeight: FontWeight.w500));
+                              return Center(
+                                child: Text(state.user.nama,
+                                    style: TextStyleWidget.titleT2(
+                                        fontWeight: FontWeight.w500)),
+                              );
                             } else {
                               return Text('....',
                                   style: TextStyleWidget.titleT2(
@@ -42,10 +45,6 @@ class ProfilePage extends StatelessWidget {
                           },
                         ),
                       ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      const Icon(Icons.edit_outlined)
                     ],
                   ),
                   // const SizedBox(height: 4),
@@ -58,9 +57,11 @@ class ProfilePage extends StatelessWidget {
                       BlocBuilder<ProfileBloc, ProfileState>(
                         builder: (context, state) {
                           if (state is ProfileSuccess) {
-                            return Text(state.user.username,
-                                style: TextStyleWidget.labelL1(
-                                    fontWeight: FontWeight.w300));
+                            return Center(
+                              child: Text(state.user.username,
+                                  style: TextStyleWidget.labelL1(
+                                      fontWeight: FontWeight.w300)),
+                            );
                           } else {
                             return Text('....',
                                 style: TextStyleWidget.labelL1(
@@ -68,14 +69,6 @@ class ProfilePage extends StatelessWidget {
                           }
                         },
                       ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Icon(
-                        Icons.edit_outlined,
-                        size: 20,
-                        color: Colors.grey.shade400,
-                      )
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -115,9 +108,12 @@ class _ProfileInfoRow extends StatelessWidget {
                           child: BlocBuilder<ProfileBloc, ProfileState>(
                             builder: (context, state) {
                               if (state is ProfileSuccess) {
-                                return Text(state.user.sektor.toUpperCase(),
-                                    style: const TextStyle(
+                                return Text(state.user.ket,
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
+                                      color: state.user.ket == 'Not Available'
+                                          ? ColorThemeStyle.redPrimary
+                                          : Colors.green,
                                       fontSize: 20,
                                     ));
                               } else {
@@ -130,7 +126,7 @@ class _ProfileInfoRow extends StatelessWidget {
                             },
                           ),
                         ),
-                        Text('Sektor', style: TextStyleWidget.bodyB1())
+                        Text('Keterangan', style: TextStyleWidget.bodyB1())
                       ],
                     ),
                   )
@@ -160,7 +156,7 @@ class _ProfileInfoRow extends StatelessWidget {
                                 );
                               }
                               return const Text(
-                                '...',
+                                '0',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -220,6 +216,7 @@ class _TopPortion extends StatelessWidget {
                 title: 'Warning!',
                 desc: 'Apakah anda yakin ingin logout?',
                 btnOkOnPress: () {
+                  context.read<LoginBloc>().add(ClearValue());
                   context.read<ProfileBloc>().add(SignOut());
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       MyRoutes.splashScreen, (_) => true);
@@ -252,12 +249,14 @@ class _TopPortion extends StatelessWidget {
                     // image: DecorationImage(
                     //     fit: BoxFit.cover,
                     //     image: NetworkImage(
-                    //         'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')),
+                    //         'https://plus.unsplash.com/premium_photo-1661644887413-169caed7ca7b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')),
                   ),
-                  child: const Icon(
-                    Icons.person,
-                    size: 50,
-                    color: ColorThemeStyle.grey50,
+                  child: const Center(
+                    child: Icon(
+                      Icons.person,
+                      size: 70,
+                      color: ColorThemeStyle.grey50,
+                    ),
                   ),
                 ),
                 Positioned(

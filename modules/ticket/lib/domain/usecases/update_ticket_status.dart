@@ -7,6 +7,6 @@ class UpdateTicketStatus {
 
   UpdateTicketStatus({required this.ticketRepository});
 
-  Future<Either<Failure, bool>> execute(int idTiket, String status) =>
-      ticketRepository.updateTicketStatus(idTiket, status);
+  Future<Either<Failure, bool>> execute(String nomorTiket, String status) =>
+      ticketRepository.updateTicketStatus(nomorTiket, status);
 }

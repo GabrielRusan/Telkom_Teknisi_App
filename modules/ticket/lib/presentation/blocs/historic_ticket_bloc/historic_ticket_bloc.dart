@@ -45,6 +45,8 @@ class HistoricTicketBloc
           }
         }
 
+        data.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+
         emit(HistoricTicketLoaded(
             result: data,
             selesaiTodayCount: selesaiTodayCount,
