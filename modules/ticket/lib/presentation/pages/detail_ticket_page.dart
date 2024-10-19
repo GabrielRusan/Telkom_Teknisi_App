@@ -302,6 +302,21 @@ class DetailTicketPage extends StatelessWidget {
                                       fontWeight: FontWeight.w500,
                                       color: ColorThemeStyle.grey100),
                                 ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  'Durasi Pengerjaan',
+                                  style: TextStyleWidget.titleT3(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  calculateDurasi(
+                                      ticket.createdAt, ticket.updatedAt),
+                                  style: TextStyleWidget.bodyB3(
+                                      fontWeight: FontWeight.w500,
+                                      color: ColorThemeStyle.grey100),
+                                ),
                               ],
                             ),
                           )
