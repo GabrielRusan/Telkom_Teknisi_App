@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "715749499128",
+    "project_id": "telkom-teknisi",
+    "storage_bucket": "telkom-teknisi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715749499128:android:7530bb982846c47a201b0d",
+        "android_client_info": {
+          "package_name": "com.example.telkom_teknisi_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChLdAcUXU81RRQnzgwhs6WJScmXG5pBhk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

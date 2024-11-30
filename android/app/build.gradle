@@ -1,9 +1,11 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services' // Untuk Firebase
+    id "kotlin-android" // Untuk Kotlin
+    id "dev.flutter.flutter-gradle-plugin" // Untuk Flutter
 }
+
+def kotlin_version = "1.8.22" // Versi Kotlin yang digunakan
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
@@ -34,10 +36,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.telkom_teknisi_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
@@ -46,8 +45,6 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
         }
     }
@@ -55,4 +52,20 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// Strategi untuk memastikan versi Kotlin yang konsisten
+configurations.all {
+    resolutionStrategy {
+        force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    }
+}
+
+// (Opsional) Blok untuk menghindari duplikasi jika diperlukan
+configurations {
+    all {
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+    }
 }
