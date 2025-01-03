@@ -38,6 +38,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(LoginFailure(e.message));
     } on ServerException {
       return const Left(ServerFailure('Server Error'));
+    } on NotificationPermitException {
+      return const Left(NotifPermitFailure('Izin Notifikasi Tidak Diberikan!'));
     } on ConnectionException {
       return const Left(
           ConnectionFailure('Gagal menghubungkan dengan server!'));
@@ -46,6 +48,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> logOut() async {
-    return await authRemoteDataSource.logOut();
+    try {
+      return await authRemoteDataSource.logOut();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> getNotifPermission() async {
+    return await authRemoteDataSource.requestNotificationPermission();
   }
 }

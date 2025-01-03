@@ -6,5 +6,6 @@ abstract class AuthRepository {
   Future<Either<Failure, bool>> logIn(
       {required String username, required String password});
   Future<Either<Failure, User>> getUserData();
+  Future<bool> getNotifPermission();
   Future<bool> logOut();
 }

@@ -20,7 +20,7 @@ import 'package:dio/src/options.dart' as _i2;
 import 'package:dio/src/response.dart' as _i6;
 import 'package:dio/src/transformer.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:shared_preferences/shared_preferences.dart' as _i12;
+import 'package:shared_preferences/src/shared_preferences_legacy.dart' as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -1034,6 +1034,24 @@ class MockAuthRemoteDataSource extends _i1.Mock
           ),
         )),
       ) as _i10.Future<_i7.UserModel>);
+
+  @override
+  _i10.Future<bool> logOut() => (super.noSuchMethod(
+        Invocation.method(
+          #logOut,
+          [],
+        ),
+        returnValue: _i10.Future<bool>.value(false),
+      ) as _i10.Future<bool>);
+
+  @override
+  _i10.Future<bool> requestNotificationPermission() => (super.noSuchMethod(
+        Invocation.method(
+          #requestNotificationPermission,
+          [],
+        ),
+        returnValue: _i10.Future<bool>.value(false),
+      ) as _i10.Future<bool>);
 }
 
 /// A class which mocks [AuthRepository].
@@ -1088,4 +1106,22 @@ class MockAuthRepository extends _i1.Mock implements _i14.AuthRepository {
           ),
         )),
       ) as _i10.Future<_i8.Either<_i15.Failure, _i16.User>>);
+
+  @override
+  _i10.Future<bool> getNotifPermission() => (super.noSuchMethod(
+        Invocation.method(
+          #getNotifPermission,
+          [],
+        ),
+        returnValue: _i10.Future<bool>.value(false),
+      ) as _i10.Future<bool>);
+
+  @override
+  _i10.Future<bool> logOut() => (super.noSuchMethod(
+        Invocation.method(
+          #logOut,
+          [],
+        ),
+        returnValue: _i10.Future<bool>.value(false),
+      ) as _i10.Future<bool>);
 }

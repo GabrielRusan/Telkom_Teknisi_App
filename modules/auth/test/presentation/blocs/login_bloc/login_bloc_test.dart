@@ -10,11 +10,13 @@ import '../../../test_helper/usecase_test_helper.mocks.dart';
 
 void main() {
   late MockLogin mockLogin;
+  late MockGetNotifPermission mockNotif;
   late LoginBloc loginBloc;
 
   setUp(() {
     mockLogin = MockLogin();
-    loginBloc = LoginBloc(mockLogin);
+    mockNotif = MockGetNotifPermission();
+    loginBloc = LoginBloc(mockLogin, mockNotif);
   });
 
   const String tUsername = 'username';

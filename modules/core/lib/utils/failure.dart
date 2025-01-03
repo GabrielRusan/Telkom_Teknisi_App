@@ -13,6 +13,10 @@ class ServerFailure extends Failure {
   const ServerFailure(super.message);
 }
 
+class NotifPermitFailure extends Failure {
+  const NotifPermitFailure(super.message);
+}
+
 class TokenFailure extends Failure {
   const TokenFailure(super.message);
 }

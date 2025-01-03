@@ -1,1 +1,1 @@
-enum LoginStatus { success, inProggres, failed, initial }
+enum LoginStatus { success, inProggres, failed, initial, noPermit }

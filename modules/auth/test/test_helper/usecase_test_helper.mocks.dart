@@ -7,6 +7,7 @@ import 'dart:async' as _i5;
 
 import 'package:auth/domain/entities/user.dart' as _i8;
 import 'package:auth/domain/repositories/auth_repository.dart' as _i2;
+import 'package:auth/domain/usecases/get_notif_permission.dart' as _i9;
 import 'package:auth/domain/usecases/get_user_data.dart' as _i7;
 import 'package:auth/domain/usecases/login.dart' as _i4;
 import 'package:core/utils/failure.dart' as _i6;
@@ -126,4 +127,32 @@ class MockGetUserData extends _i1.Mock implements _i7.GetUserData {
           ),
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, _i8.User>>);
+}
+
+/// A class which mocks [GetNotifPermission].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetNotifPermission extends _i1.Mock
+    implements _i9.GetNotifPermission {
+  MockGetNotifPermission() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.AuthRepository get repository => (super.noSuchMethod(
+        Invocation.getter(#repository),
+        returnValue: _FakeAuthRepository_0(
+          this,
+          Invocation.getter(#repository),
+        ),
+      ) as _i2.AuthRepository);
+
+  @override
+  _i5.Future<bool> execute() => (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [],
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
 }

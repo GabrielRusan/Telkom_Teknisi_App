@@ -28,3 +28,5 @@ class PasswordChanged extends LoginEvent {
 }
 
 class ClearValue extends LoginEvent {}
+
+class RequestNotifPermission extends LoginEvent {}

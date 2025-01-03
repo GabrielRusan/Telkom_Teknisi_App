@@ -5,12 +5,15 @@ import 'package:auth/presentation/widgets/text_field_password.dart';
 import 'package:auth/presentation/widgets/text_field_username.dart';
 import 'package:auth/utils/login_status.dart';
 import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
+import 'package:core/styles/text_style_widget.dart';
 import 'package:core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 import 'package:ticket/presentation/blocs/active_ticket_bloc/active_ticket_bloc.dart';
 import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
+// ignore: depend_on_referenced_packages
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -27,6 +30,23 @@ class LoginScreen extends StatelessWidget {
           context.read<ProfileBloc>().add(FetchUserProfileData());
           context.read<ActiveTicketBloc>().add(FetchActiveTicket());
           context.read<HistoricTicketBloc>().add(FetchHistoricTicket());
+        } else if (state.loginStatus == LoginStatus.noPermit) {
+          AwesomeDialog(
+            context: context,
+            headerAnimationLoop: false,
+            dialogType: DialogType.warning,
+            animType: AnimType.scale,
+            titleTextStyle:
+                TextStyleWidget.headlineH3(fontWeight: FontWeight.w500),
+            descTextStyle: TextStyleWidget.bodyB1(),
+            title: 'Warning!',
+            desc: 'Anda harus mengizinkan notifikasi untuk bisa login!',
+            btnOkOnPress: () {
+              context.read<LoginBloc>().add(RequestNotifPermission());
+            },
+            btnOkText: 'Izinkan',
+            btnCancelOnPress: () {},
+          ).show();
         }
       },
       child: Scaffold(

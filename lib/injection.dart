@@ -2,6 +2,7 @@ import 'package:auth/data/datasources/auth_remote_datasource/auth_remote_datasou
 import 'package:auth/data/datasources/auth_remote_datasource/auth_remote_datasource_impl.dart';
 import 'package:auth/data/repositories/auth_repository_impl.dart';
 import 'package:auth/domain/repositories/auth_repository.dart';
+import 'package:auth/domain/usecases/get_notif_permission.dart';
 import 'package:auth/domain/usecases/get_user_data.dart';
 import 'package:auth/domain/usecases/login.dart';
 import 'package:auth/domain/usecases/logout.dart';
@@ -53,6 +54,8 @@ Future<void> init() async {
   //usecases
   locator.registerLazySingleton(() => Login(repository: locator()));
   locator.registerLazySingleton(() => GetUserData(repository: locator()));
+  locator
+      .registerLazySingleton(() => GetNotifPermission(repository: locator()));
   locator.registerLazySingleton(() => Logout(repository: locator()));
   locator.registerLazySingleton(
       () => GetActiveTicket(ticketRepository: locator()));
@@ -62,7 +65,7 @@ Future<void> init() async {
       () => UpdateTicketStatus(ticketRepository: locator()));
 
   //blocs
-  locator.registerFactory(() => LoginBloc(locator()));
+  locator.registerFactory(() => LoginBloc(locator(), locator()));
   locator.registerFactory(() => SplashScreenBloc(locator()));
   locator.registerFactory(() => HomepageBloc());
   locator.registerFactory(() => HistoricTicketBloc(locator()));
