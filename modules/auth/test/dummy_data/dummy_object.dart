@@ -9,7 +9,8 @@ UserModel tUserModel = UserModel(
     username: 'username',
     pass: 'pass',
     createdAt: DateTime(2024, 1, 1, 0, 0, 0),
-    updatedAt: DateTime(2024, 1, 1, 0, 0, 0));
+    updatedAt: DateTime(2024, 1, 1, 0, 0, 0),
+    imageUrl: '');
 
 User tUser = User(
     idteknisi: '1',
@@ -19,4 +20,5 @@ User tUser = User(
     username: 'username',
     pass: 'pass',
     createdAt: DateTime(2024, 1, 1, 0, 0, 0),
-    updatedAt: DateTime(2024, 1, 1, 0, 0, 0));
+    updatedAt: DateTime(2024, 1, 1, 0, 0, 0),
+    imageUrl: '');

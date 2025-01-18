@@ -234,47 +234,86 @@ class _TopPortion extends StatelessWidget {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            width: 150,
-            height: 150,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: ColorThemeStyle.grey80,
-                    shape: BoxShape.circle,
-                    // image: DecorationImage(
-                    //     fit: BoxFit.cover,
-                    //     image: NetworkImage(
-                    //         'https://plus.unsplash.com/premium_photo-1661644887413-169caed7ca7b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.person,
-                      size: 70,
-                      color: ColorThemeStyle.grey50,
-                    ),
+        BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileSuccess) {
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: ColorThemeStyle.grey80,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: NetworkImage(state.user.imageUrl)),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor:
+                              Theme.of(context).scaffoldBackgroundColor,
+                          child: Container(
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: const BoxDecoration(
+                                color: Colors.green, shape: BoxShape.circle),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    child: Container(
-                      margin: const EdgeInsets.all(8.0),
+              );
+            }
+
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: 150,
+                height: 150,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Container(
                       decoration: const BoxDecoration(
-                          color: Colors.green, shape: BoxShape.circle),
+                        color: ColorThemeStyle.grey80,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.person,
+                          size: 70,
+                          color: ColorThemeStyle.grey50,
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        child: Container(
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                              color: Colors.green, shape: BoxShape.circle),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         )
       ],
     );

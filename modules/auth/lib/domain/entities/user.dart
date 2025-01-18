@@ -7,6 +7,7 @@ class User extends Equatable {
   final String ket;
   final String username;
   final String pass;
+  final String imageUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -17,11 +18,21 @@ class User extends Equatable {
     required this.ket,
     required this.username,
     required this.pass,
+    required this.imageUrl,
     required this.createdAt,
     required this.updatedAt,
   });
 
   @override
-  List<Object?> get props =>
-      [idteknisi, nama, kehadiran, ket, username, pass, createdAt, updatedAt];
+  List<Object?> get props => [
+        idteknisi,
+        nama,
+        kehadiran,
+        imageUrl,
+        ket,
+        username,
+        pass,
+        createdAt,
+        updatedAt
+      ];
 }
