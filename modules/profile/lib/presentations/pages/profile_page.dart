@@ -6,7 +6,9 @@ import 'package:core/utils/routes.dart';
 import 'package:core/widgets/bottom_navbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:profile/presentations/blocs/edit_foto_profile_bloc/edit_foto_profile_bloc.dart';
 import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
+import 'package:profile/presentations/widgets/edit_foto_bottom_sheet.dart';
 import 'package:ticket/presentation/blocs/historic_ticket_bloc/historic_ticket_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -90,91 +92,101 @@ class _ProfileInfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 80,
-        constraints: const BoxConstraints(maxWidth: 400),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: BlocBuilder<ProfileBloc, ProfileState>(
-                            builder: (context, state) {
-                              if (state is ProfileSuccess) {
-                                return Text(state.user.ket,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: state.user.ket == 'Not Available'
-                                          ? ColorThemeStyle.redPrimary
-                                          : Colors.green,
-                                      fontSize: 20,
-                                    ));
-                              } else {
-                                return const Text('...',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ));
-                              }
-                            },
+    return BlocListener<EditFotoProfileBloc, EditFotoProfileState>(
+      listener: (context, state) {
+        if (state is EditFotoProfileSuccess) {
+          context.read<ProfileBloc>().add(FetchUserProfileData());
+        } else if (state is EditFotoProfileFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('gagal mengganti foto profil!')));
+        }
+      },
+      child: Container(
+          height: 80,
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: BlocBuilder<ProfileBloc, ProfileState>(
+                              builder: (context, state) {
+                                if (state is ProfileSuccess) {
+                                  return Text(state.user.ket,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: state.user.ket == 'Not Available'
+                                            ? ColorThemeStyle.redPrimary
+                                            : Colors.green,
+                                        fontSize: 20,
+                                      ));
+                                } else {
+                                  return const Text('...',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ));
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                        Text('Keterangan', style: TextStyleWidget.bodyB1())
-                      ],
-                    ),
-                  )
-                ],
+                          Text('Keterangan', style: TextStyleWidget.bodyB1())
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  const VerticalDivider(),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: BlocBuilder<HistoricTicketBloc,
-                              HistoricTicketState>(
-                            builder: (context, state) {
-                              if (state is HistoricTicketLoaded) {
-                                return Text(
-                                  '${state.selesaiAllCount}',
-                                  style: const TextStyle(
+              Expanded(
+                child: Row(
+                  children: [
+                    const VerticalDivider(),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: BlocBuilder<HistoricTicketBloc,
+                                HistoricTicketState>(
+                              builder: (context, state) {
+                                if (state is HistoricTicketLoaded) {
+                                  return Text(
+                                    '${state.selesaiAllCount}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  );
+                                }
+                                return const Text(
+                                  '0',
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                   ),
                                 );
-                              }
-                              return const Text(
-                                '0',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              );
-                            },
+                              },
+                            ),
                           ),
-                        ),
-                        Text('Total Tasks Selesai',
-                            style: TextStyleWidget.bodyB1())
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ));
+                          Text('Total Tasks Selesai',
+                              style: TextStyleWidget.bodyB1())
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )),
+    );
   }
 }
 
@@ -257,14 +269,19 @@ class _TopPortion extends StatelessWidget {
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
+                        child: GestureDetector(
+                          onTap: () {
+                            showEditFotoBottomSheet(context);
+                          },
                           child: Container(
                             margin: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(6.0),
                             decoration: const BoxDecoration(
-                                color: Colors.green, shape: BoxShape.circle),
+                                color: Colors.red, shape: BoxShape.circle),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ),

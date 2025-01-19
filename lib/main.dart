@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:core/utils/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:profile/presentations/blocs/edit_foto_profile_bloc/edit_foto_profile_bloc.dart';
 import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 import 'package:telkom_teknisi_app/firebase_options.dart';
 import 'package:telkom_teknisi_app/injection.dart' as di;
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProfileBloc>(
           create: (_) => di.locator<ProfileBloc>(),
+        ),
+        BlocProvider<EditFotoProfileBloc>(
+          create: (_) => di.locator<EditFotoProfileBloc>(),
         ),
       ],
       child: MaterialApp(

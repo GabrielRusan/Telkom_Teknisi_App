@@ -12,6 +12,7 @@ import 'package:core/presentation/blocs/homepage_bloc/homepage_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:profile/presentations/blocs/edit_foto_profile_bloc/edit_foto_profile_bloc.dart';
 import 'package:profile/presentations/blocs/profile_bloc/profile_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticket/data/datasources/ticket_remote_datasource/ticket_remote_datasource.dart';
@@ -33,9 +34,7 @@ Future<void> init() async {
     () => SharedPreferences.getInstance(),
   );
   await locator.isReady<SharedPreferences>();
-  locator.registerLazySingleton<Dio>(() => Dio(BaseOptions(
-      connectTimeout: const Duration(seconds: 3),
-      receiveTimeout: const Duration(seconds: 5))));
+  locator.registerLazySingleton<Dio>(() => Dio());
   locator.registerLazySingleton(() => DataConnectionChecker());
 
   //datasources
@@ -72,4 +71,5 @@ Future<void> init() async {
   locator.registerFactory(() => ActiveTicketBloc(locator()));
   locator.registerFactory(() => UpdateTicketBloc(locator()));
   locator.registerFactory(() => ProfileBloc(locator(), locator()));
+  locator.registerFactory(() => EditFotoProfileBloc(locator(), locator()));
 }

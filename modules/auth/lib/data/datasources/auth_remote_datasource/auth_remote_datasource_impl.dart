@@ -111,9 +111,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw ConnectionException();
       } else if (e.type == DioExceptionType.badResponse) {
         if (e.response?.statusCode == 400) {
+          // print(e.response?.data['message']);
           throw WrongCombinationException('Field tidak boleh kosong!');
         } else if (e.response?.statusCode == 401) {
           throw WrongCombinationException(e.response?.data['message']);
+        } else if (e.response?.statusCode == 409) {
+          throw WrongCombinationException(
+              'Akun ini sedang aktif device yang lain');
         }
       }
       throw ServerException();
@@ -163,6 +167,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await dio.post("$BASE_URL/login/logout",
           options: Options(headers: {'Authorization': 'Bearer $token'}));
     } on DioException catch (e) {
+      // print(e.response?.data['message']);
       await sharedPref.clear();
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {
